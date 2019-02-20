@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainVC">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="binonion.png" translatesAutoresizingMaskIntoConstraints="NO" id="HRQ-ib-6vh">
+                    <rect key="frame" x="0.0" y="31" width="103" height="65"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="65" id="9tT-sz-WTE"/>
+                        <constraint firstAttribute="width" constant="103" id="fdK-fQ-8dF"/>
+                    </constraints>
+                    <viewLayoutGuide key="safeArea" id="4Wo-Nc-nWP"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BGP Cloud:Chartit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uae-se-tEK">
+                    <rect key="frame" x="102" y="31" width="273" height="65"/>
+                    <color key="backgroundColor" red="0.1215686277" green="0.1294117719" blue="0.1411764771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="65" id="fpF-0w-bTE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="27"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Uae-se-tEK" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="102" id="GWq-Xw-Kkl"/>
+                <constraint firstItem="Uae-se-tEK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="11" id="MK5-qp-28k"/>
+                <constraint firstItem="HRQ-ib-6vh" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="11" id="MwS-CI-gE7"/>
+                <constraint firstItem="Uae-se-tEK" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Xf7-wp-lne"/>
+                <constraint firstItem="HRQ-ib-6vh" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="xrM-i3-ZBT"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="55.200000000000003" y="48.125937031484263"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="binonion.png" width="516" height="291"/>
+    </resources>
+</document>
