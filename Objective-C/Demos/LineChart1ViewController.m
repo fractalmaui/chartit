@@ -31,12 +31,15 @@
     //DHS CHANGES-------
     self.title = pTitle;
     needSliders = FALSE;
-    if (plotType == 99) //Special type w/ sliders
-    {
-        needSliders = TRUE;
-    }
+//    if (plotType == 99) //Special type w/ sliders
+//    {
+//        needSliders = TRUE;
+//    }
     _sliderX.hidden = !needSliders;
     _sliderY.hidden = !needSliders;
+    _sliderTextX.hidden = !needSliders;
+    _sliderTextY.hidden = !needSliders;
+
     //END DHS CHANGES-------
 
     self.options = @[
@@ -67,7 +70,7 @@
     _chartView.drawGridBackgroundEnabled = NO;
 
     // x-axis limit line
-    ChartLimitLine *llXAxis = [[ChartLimitLine alloc] initWithLimit:10.0 label:@"Index 10"];
+    ChartLimitLine *llXAxis = [[ChartLimitLine alloc] initWithLimit:xRange label:@"Index 10"];
     llXAxis.lineWidth = 4.0;
     llXAxis.lineDashLengths = @[@(10.f), @(10.f), @(0.f)];
     llXAxis.labelPosition = ChartLimitLabelPositionRightBottom;
@@ -144,6 +147,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+//=====LineChartVC==================================================
 - (void)updateChartData
 {
     if (self.shouldHideData)
@@ -151,74 +155,118 @@
         _chartView.data = nil;
         return;
     }
-    if (needSliders) //DHS
-    {
-        [self setDataCount:_sliderX.value range:_sliderY.value];
-    }
-    else
-    {
-        [self setDataCount:xRange range:(double)yRange];
+    int monthCount = [rpd getStatsMonthCount];
+    int dataRange  = [rpd getStatsMaxForData : @"all"];  //2/22 need change?
 
-    }
+    [self loadPlotData:monthCount range:(double)dataRange];
 }
 
-- (void)setDataCount:(int)count range:(double)range
+//=====LineChartVC==================================================
+- (void)loadPlotData:(int)count range:(double)range
 {
-    NSMutableArray *values = [[NSMutableArray alloc] init];
-    //DHS Load data here...
-    for (int i = 0; i < count; i++)
-    {
-//        double val = arc4random_uniform(range) + 3;
-        double val = [rpd getTotalByMonth:i];
-        [values addObject:[[ChartDataEntry alloc] initWithX:i y:val icon: [UIImage imageNamed:@"icon"]]];
-    }
+    NSMutableArray *totalVals  = [[NSMutableArray alloc] init];
+    NSMutableArray *ltotalVals = [[NSMutableArray alloc] init];
+    NSMutableArray *ptotalVals = [[NSMutableArray alloc] init];
     
+    BOOL needTotals  = [plotType.lowercaseString containsString:@"total"];
+    BOOL needLTotals = [plotType.lowercaseString containsString:@"local"];
+    BOOL needPTotals = [plotType.lowercaseString containsString:@"processed"];
+
+    double start = 1.0;
+
+    for (int i = start; i < start + count + 1; i++)
+    {
+        double val;
+        if (needTotals)
+        {
+            val = [rpd getTotalByMonth:i-1];
+            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+        }
+        if (needLTotals)
+        {
+            val = [rpd getLocalTotalByMonth:i-1];
+            [ltotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+        }
+        if (needPTotals)
+        {
+            val = [rpd getProcessedTotalByMonth:i-1];
+            [ptotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+        }
+        //HUH?            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val icon: [UIImage imageNamed:@"icon"]]];
+    } //end int i
+
     LineChartDataSet *set1 = nil;
-    if (_chartView.data.dataSetCount > 0)
+    LineChartDataSet *set2 = nil;
+    LineChartDataSet *set3 = nil;
+
+    if (needTotals)
     {
-        set1 = (LineChartDataSet *)_chartView.data.dataSets[0];
-        set1.values = values;
-        [_chartView.data notifyDataChanged];
-        [_chartView notifyDataSetChanged];
-    }
-    else
-    {
-        set1 = [[LineChartDataSet alloc] initWithValues:values label:@"DataSet 1"];
-        
+        set1 = [[LineChartDataSet alloc] initWithValues:totalVals label:@"Totals"];
         set1.drawIconsEnabled = NO;
-        
-        set1.lineDashLengths = @[@5.f, @2.5f];
-        set1.highlightLineDashLengths = @[@5.f, @2.5f];
-        [set1 setColor:UIColor.blackColor];
-        [set1 setCircleColor:UIColor.blackColor];
-        set1.lineWidth = 1.0;
-        set1.circleRadius = 3.0;
-        set1.drawCircleHoleEnabled = NO;
-        set1.valueFont = [UIFont systemFontOfSize:9.f];
-        set1.formLineDashLengths = @[@5.f, @2.5f];
-        set1.formLineWidth = 1.0;
-        set1.formSize = 15.0;
-        
-        NSArray *gradientColors = @[
-                                    (id)[ChartColorTemplates colorFromString:@"#00ff0000"].CGColor,
-                                    (id)[ChartColorTemplates colorFromString:@"#ffff0000"].CGColor
-                                    ];
-        CGGradientRef gradient = CGGradientCreateWithColors(nil, (CFArrayRef)gradientColors, nil);
-        
-        set1.fillAlpha = 1.f;
-        set1.fill = [ChartFill fillWithLinearGradient:gradient angle:90.f];
-        set1.drawFilledEnabled = YES;
-        
-        CGGradientRelease(gradient);
-        
-        NSMutableArray *dataSets = [[NSMutableArray alloc] init];
-        [dataSets addObject:set1];
-        
-        LineChartData *data = [[LineChartData alloc] initWithDataSets:dataSets];
-        
-        _chartView.data = data;
     }
-}
+    if (needLTotals)
+    {
+        set2 = [[LineChartDataSet alloc] initWithValues:ltotalVals label:@"Local"];
+        set2.drawIconsEnabled = NO;
+    }
+    if (needPTotals)
+    {
+        set3 = [[LineChartDataSet alloc] initWithValues:ptotalVals label:@"Processed"];
+        set3.drawIconsEnabled = NO;
+    }
+
+//    set1 = [[LineChartDataSet alloc] initWithValues:values label:@"DataSet 1"];
+//        set1.drawIconsEnabled = NO;
+    NSMutableArray *dataSets = [[NSMutableArray alloc] init];
+    //Note colors are AARRBBGG!
+    NSArray *colorz = @[@"#ff5555ee",@"#ff55ee55",@"#ffee5555"];
+    NSArray *dashlens1 = @[@6.0f,@7.0f,@8.0f];
+    NSArray *dashlens2 = @[@3.0f,@2.0f,@1.0f];
+
+    for (int scount = 0;scount<3;scount++)
+    {
+        LineChartDataSet *nextSet;
+        switch(scount)
+        {
+            case 0: nextSet = set1;break;
+            case 1: nextSet = set2;break;
+            case 2: nextSet = set3;break;
+        }
+        if (nextSet != nil)
+        {
+//            nextSet.lineDashLengths = @[@5.f, @2.5f];
+            nextSet.lineDashLengths = @[dashlens1[scount], dashlens2[scount]];
+            nextSet.highlightLineDashLengths = @[dashlens1[scount], dashlens2[scount]];
+            [nextSet setColor:UIColor.blackColor];
+            [nextSet setCircleColor:UIColor.blackColor];
+            nextSet.lineWidth = 1.0;
+            nextSet.circleRadius = 3.0;
+            nextSet.drawCircleHoleEnabled = NO;
+            nextSet.valueFont = [UIFont systemFontOfSize:9.f];
+            nextSet.formLineDashLengths = @[dashlens1[scount], dashlens2[scount]];
+            nextSet.formLineWidth = 1.0;
+            nextSet.formSize = 15.0;
+            
+            NSString *cstr = colorz[scount];
+            NSArray *gradientColors = @[
+                                        (id)[ChartColorTemplates colorFromString:@"#ffffffff"].CGColor, //Bottom
+                                        (id)[ChartColorTemplates colorFromString:cstr].CGColor //Top
+                                        ];
+            CGGradientRef gradient = CGGradientCreateWithColors(nil, (CFArrayRef)gradientColors, nil);
+            
+            nextSet.fillAlpha = 1.f;
+            nextSet.fill = [ChartFill fillWithLinearGradient:gradient angle:90.f];
+            nextSet.drawFilledEnabled = YES;
+            
+            CGGradientRelease(gradient);
+            
+            [dataSets addObject:nextSet];
+        } //end for nextset
+    }
+    LineChartData *data = [[LineChartData alloc] initWithDataSets:dataSets];
+    
+    _chartView.data = data;
+} //end loadPlotData
 
 - (void)optionTapped:(NSString *)key
 {

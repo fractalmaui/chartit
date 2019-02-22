@@ -2,9 +2,7 @@
 //  DemoBaseViewController.m
 //  ChartsDemo
 //
-//  Copyright 2015 Daniel Cohen Gindi & Philipp Jahoda
-//  A port of MPAndroidChart for iOS
-//  Licensed under Apache License 2.0
+//  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
 //  https://github.com/danielgindi/Charts
 //
@@ -80,12 +78,12 @@
 //----DHS mods--------------------------------------------------------------
 - (void) setPlotType : (NSString *)ptype
 {
-    plotType = 0; //Default to months anywho...
-    //Canned plot type: 0 = months
-    if ([ptype.lowercaseString containsString:@"month"]) plotType = 0;
+    plotType = ptype; //Default to months anywho...
 } //end setPlotType
 
 //----DHS mods--------------------------------------------------------------
+// These are suggested ranges; they get overwritten in each chart
+//  depending on how much data is available
 - (void) setPlotXYRanges : (int) xr : (int) yr
 {
     xRange = xr;

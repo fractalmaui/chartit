@@ -3,7 +3,7 @@
 //  ChartsDemo-iOS
 //
 //  Created by Dave Scruton on 2/17/19.
-//  Copyright © 2019 dcg. All rights reserved.
+//  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -21,9 +21,11 @@
 #define NAV_BATCH_BUTTON 3
 
 
-@interface MainVC : UIViewController <NavButtonsDelegate,RawPlotDataDelegate>
+@interface MainVC : UIViewController <NavButtonsDelegate,RawPlotDataDelegate,
+                            UITableViewDelegate,UITableViewDataSource>
 {
     NavButtons *nav;
+    UITableView *plotOptionsTable;
     int viewWid,viewHit,viewW2,viewH2;
     NSMutableArray *plotObjects;
     spinnerView *spv;
@@ -31,9 +33,27 @@
     BOOL statsLoaded;
     LineChart1ViewController *lc1VC;
     RawPlotData *rpd;
+    NSString *funcSelect;
+    NSString *ptypeSelect;
+    NSArray *lineOptions;
+    NSArray *barOptions;
+    NSArray *pieOptions;
+    NSArray *scatterOptions;
+    NSArray *tableOptions;
 }
 
-
+-(void) startLoadingData;
+@property (weak, nonatomic) IBOutlet UIButton *lineButton;
+@property (weak, nonatomic) IBOutlet UIButton *barButton;
+@property (weak, nonatomic) IBOutlet UIButton *donutButton;
+@property (weak, nonatomic) IBOutlet UIButton *scatterButton;
+@property (weak, nonatomic) IBOutlet UIView *buttonsView;
+@property (weak, nonatomic) IBOutlet UIView *overlayView;
+@property (weak, nonatomic) IBOutlet UIImageView *animImage;
+- (IBAction)lineSelect:(id)sender;
+- (IBAction)barSelect:(id)sender;
+- (IBAction)donutSelect:(id)sender;
+- (IBAction)scatterSelect:(id)sender;
 
 @end
 

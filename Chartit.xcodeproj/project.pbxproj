@@ -166,6 +166,10 @@
 		72730C94221B21BE008FB944 /* bgpspin.png in Resources */ = {isa = PBXBuildFile; fileRef = 72730C93221B21BE008FB944 /* bgpspin.png */; };
 		72730C97221B2F90008FB944 /* RawPlotData.m in Sources */ = {isa = PBXBuildFile; fileRef = 72730C96221B2F90008FB944 /* RawPlotData.m */; };
 		72730C99221B38CB008FB944 /* txt in Resources */ = {isa = PBXBuildFile; fileRef = 72730C98221B38CA008FB944 /* txt */; };
+		72B610F8221E7AED00036E62 /* lines.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F3221E7AEC00036E62 /* lines.png */; };
+		72B610F9221E7AED00036E62 /* scatter.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F5221E7AEC00036E62 /* scatter.png */; };
+		72B610FA221E7AED00036E62 /* donut.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F6221E7AED00036E62 /* donut.png */; };
+		72B610FB221E7AED00036E62 /* bars.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F7221E7AED00036E62 /* bars.png */; };
 		B64D06EB1FB199130067418D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64D06EA1FB199130067418D /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -399,6 +403,10 @@
 		72730C95221B2F90008FB944 /* RawPlotData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RawPlotData.h; sourceTree = "<group>"; };
 		72730C96221B2F90008FB944 /* RawPlotData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RawPlotData.m; sourceTree = "<group>"; };
 		72730C98221B38CA008FB944 /* txt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = txt; sourceTree = "<group>"; };
+		72B610F3221E7AEC00036E62 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = ../../Resources/lines.png; sourceTree = "<group>"; };
+		72B610F5221E7AEC00036E62 /* scatter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scatter.png; path = ../../Resources/scatter.png; sourceTree = "<group>"; };
+		72B610F6221E7AED00036E62 /* donut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = donut.png; path = ../../Resources/donut.png; sourceTree = "<group>"; };
+		72B610F7221E7AED00036E62 /* bars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bars.png; path = ../../Resources/bars.png; sourceTree = "<group>"; };
 		B64D06EA1FB199130067418D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -627,6 +635,10 @@
 		5B8EAF2E1AB32E15009697AA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				72B610F7221E7AED00036E62 /* bars.png */,
+				72B610F6221E7AED00036E62 /* donut.png */,
+				72B610F3221E7AEC00036E62 /* lines.png */,
+				72B610F5221E7AEC00036E62 /* scatter.png */,
 				72730C93221B21BE008FB944 /* bgpspin.png */,
 				722D3934221A81B300C073B5 /* bgpburst.png */,
 				722D392C221A75FB00C073B5 /* binonion.png */,
@@ -798,8 +810,9 @@
 					};
 					5B57BBAE1A9B26AA0036A6CC = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = Q3UNUAXG6Q;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -896,7 +909,9 @@
 				5BEAED411ABC1AC60013F194 /* SinusBarChartViewController.xib in Resources */,
 				72730C94221B21BE008FB944 /* bgpspin.png in Resources */,
 				722D392D221A75FC00C073B5 /* binonion.png in Resources */,
+				72B610FB221E7AED00036E62 /* bars.png in Resources */,
 				722D3935221A81B300C073B5 /* bgpburst.png in Resources */,
+				72B610F9221E7AED00036E62 /* scatter.png in Resources */,
 				5BEAED371ABC192F0013F194 /* RadarChartViewController.xib in Resources */,
 				722D3928221A75AE00C073B5 /* HamburgerNOT.png in Resources */,
 				5BEAED261ABC0BE20013F194 /* MultipleBarChartViewController.xib in Resources */,
@@ -920,7 +935,9 @@
 				5BD47E661ABB424E008FCEC6 /* BarChartViewController.xib in Resources */,
 				72730C99221B38CB008FB944 /* txt in Resources */,
 				5BDEDC421ABB7F73007D3A60 /* HorizontalBarChartViewController.xib in Resources */,
+				72B610F8221E7AED00036E62 /* lines.png in Resources */,
 				5BDEDC481ABB871E007D3A60 /* CombinedChartViewController.xib in Resources */,
+				72B610FA221E7AED00036E62 /* donut.png in Resources */,
 				722D3926221A75AE00C073B5 /* multiNOT.png in Resources */,
 				5BE673951D5B4E0900A87BA2 /* LineChartTimeViewController.xib in Resources */,
 				5BEAED1E1ABBFB340013F194 /* StackedBarChartViewController.xib in Resources */,
@@ -1205,6 +1222,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q3UNUAXG6Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/../Carthage/Build/iOS",
 					"$(PROJECT_DIR)/3rdparty",
@@ -1214,6 +1234,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.beyondgreenpartners.bgpcharts;
 				PRODUCT_NAME = Chartit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
 				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/ChartsDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
@@ -1228,6 +1249,9 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = Q3UNUAXG6Q;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SOURCE_ROOT)/../Carthage/Build/iOS",
 					"$(PROJECT_DIR)/3rdparty",
@@ -1237,6 +1261,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.beyondgreenpartners.bgpcharts;
 				PRODUCT_NAME = Chartit;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos appletvsimulator appletvos";
 				SWIFT_OBJC_BRIDGING_HEADER = "Supporting Files/ChartsDemo-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";

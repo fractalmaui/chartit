@@ -22,8 +22,7 @@
     if (self = [super init])
     {
         vv  = [Vendors sharedInstance];
-        NSLog(@" estats init vendors %@",vv);
-        smartp = [[smartProducts alloc] init];
+        //NSLog(@" estats init vendors %@",vv);
         //_versionNumber    = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
         [self loadConstants];
         [self clear];
@@ -235,6 +234,7 @@
 {
     //Dumpit
     NSLog(@" dump Stats... %d/%d",_month,_year);
+    smartp = [[smartProducts alloc] init];
     NSString *tstr;
     NSString *tstr2;
     for (int i=0;i<MAX_CVENDORS;i++)

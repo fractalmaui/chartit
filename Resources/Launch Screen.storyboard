@@ -23,10 +23,10 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Chartit" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="0.0" y="312" width="375" height="43"/>
+                                <rect key="frame" x="0.0" y="312" width="375" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="375" id="06B-rW-1ZQ"/>
-                                    <constraint firstAttribute="height" constant="43" id="eJy-pq-MPm"/>
+                                    <constraint firstAttribute="height" constant="80" id="eJy-pq-MPm"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="63"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

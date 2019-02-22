@@ -12,6 +12,13 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainVC">
             <connections>
+                <outlet property="animImage" destination="DwF-9o-xGP" id="3rU-is-vlf"/>
+                <outlet property="barButton" destination="ZgT-G4-Vuz" id="tCo-1T-lQQ"/>
+                <outlet property="buttonsView" destination="0Bk-cO-LNL" id="LSG-2h-qZF"/>
+                <outlet property="donutButton" destination="zOG-39-hue" id="e1j-Rd-htC"/>
+                <outlet property="lineButton" destination="q6E-SP-jnT" id="vH9-sS-c2H"/>
+                <outlet property="overlayView" destination="d0Z-BU-bHh" id="ke5-57-Fou"/>
+                <outlet property="scatterButton" destination="FSi-GQ-ty1" id="XdK-dE-bj9"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -38,13 +45,101 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Bk-cO-LNL">
+                    <rect key="frame" x="37.5" y="193.5" width="300" height="300"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q6E-SP-jnT">
+                            <rect key="frame" x="0.0" y="0.0" width="150" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="150" id="tZa-8u-n9e"/>
+                                <constraint firstAttribute="width" constant="150" id="zP9-Pd-ciU"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="lines.png"/>
+                            <connections>
+                                <action selector="lineSelect:" destination="-1" eventType="touchUpInside" id="7c6-ux-au8"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zOG-39-hue">
+                            <rect key="frame" x="0.0" y="150" width="150" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="Onf-Og-3TW"/>
+                                <constraint firstAttribute="height" constant="150" id="YmZ-Rh-XdW"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="j5F-1t-fHv"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="rsf-4U-dQG"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="donut.png"/>
+                            <connections>
+                                <action selector="donutSelect:" destination="-1" eventType="touchUpInside" id="qmA-Ib-gL4"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZgT-G4-Vuz">
+                            <rect key="frame" x="150" y="0.0" width="150" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="150" id="7NX-aD-5Lb"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="DHd-nR-0f1"/>
+                                <constraint firstAttribute="height" constant="150" id="DPx-PS-OhC"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="Uh7-8D-ZaB"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="bars.png"/>
+                            <connections>
+                                <action selector="barSelect:" destination="-1" eventType="touchUpInside" id="ySl-Xu-e6y"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FSi-GQ-ty1">
+                            <rect key="frame" x="150" y="150" width="150" height="150"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="lessThanOrEqual" constant="150" id="5P7-hE-UeC"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="150" id="5xc-tN-2YY"/>
+                                <constraint firstAttribute="width" constant="150" id="Zec-Jb-XOV"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="eCQ-4e-jZL"/>
+                                <constraint firstAttribute="height" constant="150" id="eOj-eC-S8W"/>
+                                <constraint firstAttribute="height" relation="lessThanOrEqual" constant="150" id="qay-NC-xf3"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="scatter.png"/>
+                            <connections>
+                                <action selector="scatterSelect:" destination="-1" eventType="touchUpInside" id="b0e-cG-zIv"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="FSi-GQ-ty1" secondAttribute="trailing" id="09p-X6-CqK"/>
+                        <constraint firstAttribute="trailing" secondItem="ZgT-G4-Vuz" secondAttribute="trailing" id="6hL-3g-uRV"/>
+                        <constraint firstItem="zOG-39-hue" firstAttribute="leading" secondItem="0Bk-cO-LNL" secondAttribute="leading" id="Kve-cz-5U5"/>
+                        <constraint firstAttribute="bottom" secondItem="FSi-GQ-ty1" secondAttribute="bottom" id="ZM0-P4-f5D"/>
+                        <constraint firstAttribute="width" constant="300" id="fDC-hL-K05"/>
+                        <constraint firstItem="q6E-SP-jnT" firstAttribute="leading" secondItem="0Bk-cO-LNL" secondAttribute="leading" id="fq5-vE-r2R"/>
+                        <constraint firstItem="ZgT-G4-Vuz" firstAttribute="top" secondItem="0Bk-cO-LNL" secondAttribute="top" id="ov4-9K-zGq"/>
+                        <constraint firstAttribute="height" constant="300" id="qkB-yK-nb2"/>
+                        <constraint firstAttribute="bottom" secondItem="zOG-39-hue" secondAttribute="bottom" id="rvz-Au-S8D"/>
+                        <constraint firstItem="q6E-SP-jnT" firstAttribute="top" secondItem="0Bk-cO-LNL" secondAttribute="top" id="uWm-69-45r"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d0Z-BU-bHh">
+                    <rect key="frame" x="37.5" y="193.5" width="300" height="300"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DwF-9o-xGP">
+                            <rect key="frame" x="30" y="24" width="158" height="169"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="DY2-3f-smC"/>
+                        <constraint firstAttribute="width" constant="300" id="Noa-dM-fca"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="d0Z-BU-bHh" firstAttribute="centerX" secondItem="0Bk-cO-LNL" secondAttribute="centerX" id="9F7-5i-yln"/>
                 <constraint firstItem="Uae-se-tEK" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="102" id="GWq-Xw-Kkl"/>
                 <constraint firstItem="Uae-se-tEK" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="11" id="MK5-qp-28k"/>
                 <constraint firstItem="HRQ-ib-6vh" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="11" id="MwS-CI-gE7"/>
+                <constraint firstItem="0Bk-cO-LNL" firstAttribute="centerX" secondItem="Q5M-cg-NOt" secondAttribute="centerX" id="WdL-bo-FXt"/>
                 <constraint firstItem="Uae-se-tEK" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Xf7-wp-lne"/>
+                <constraint firstItem="0Bk-cO-LNL" firstAttribute="centerY" secondItem="Q5M-cg-NOt" secondAttribute="centerY" id="ZzD-5p-mXP"/>
+                <constraint firstItem="d0Z-BU-bHh" firstAttribute="centerY" secondItem="0Bk-cO-LNL" secondAttribute="centerY" id="kZ8-zB-iWG"/>
                 <constraint firstItem="HRQ-ib-6vh" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="xrM-i3-ZBT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
@@ -52,6 +147,10 @@
         </view>
     </objects>
     <resources>
+        <image name="bars.png" width="256" height="256"/>
         <image name="binonion.png" width="516" height="291"/>
+        <image name="donut.png" width="256" height="256"/>
+        <image name="lines.png" width="256" height="256"/>
+        <image name="scatter.png" width="256" height="256"/>
     </resources>
 </document>

@@ -1,9 +1,15 @@
 //
+//   ____                ____  _       _   ____        _
+//  |  _ \ __ ___      _|  _ \| | ___ | |_|  _ \  __ _| |_ __ _
+//  | |_) / _` \ \ /\ / / |_) | |/ _ \| __| | | |/ _` | __/ _` |
+//  |  _ < (_| |\ V  V /|  __/| | (_) | |_| |_| | (_| | || (_| |
+//  |_| \_\__,_| \_/\_/ |_|   |_|\___/ \__|____/ \__,_|\__\__,_|
+//
 //  RawPlotData.h
 //  Chartit
 //
 //  Created by Dave Scruton on 2/18/19.
-//  Copyright © 2019 dcg. All rights reserved.
+//  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -46,8 +52,12 @@
 -(void) getStatsFromParse;
 -(int)  getStatsMonthCount;
 -(int)  getStatsMaxForData : (NSString*)dtype;
--(float) getTotalByMonth : (int) month_0_to_11;
 -(void) loadDataFromBuiltinCSV : (NSString *)fname;
+
+-(float) getTotalByMonth : (int) month_0_to_11;
+-(float) getLocalTotalByMonth : (int) month_0_to_11;
+-(float) getProcessedTotalByMonth : (int) month_0_to_11;
+
 
 @end
 

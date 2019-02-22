@@ -33,12 +33,14 @@
     //DHS CHANGES-------
     self.title = pTitle;
     needSliders = FALSE;
-    if (plotType == 99) //Special type w/ sliders
-    {
-        needSliders = TRUE;
-    }
-    _sliderX.hidden = !needSliders;
-    _sliderY.hidden = !needSliders;
+//    if (plotType == 99) //Special type w/ sliders  2/22
+//    {
+//        needSliders = TRUE;
+//    }
+    _sliderX.hidden     = !needSliders;
+    _sliderY.hidden     = !needSliders;
+    _sliderTextX.hidden = !needSliders;
+    _sliderTextY.hidden = !needSliders;
     //END DHS CHANGES------
     self.options = @[
                      @{@"key": @"toggleValues", @"label": @"Toggle Values"},
@@ -87,7 +89,7 @@
     leftAxis.axisMinimum = 0.0; // this replaces startAtZero = YES
     
     ChartYAxis *rightAxis = _chartView.rightAxis;
-    rightAxis.enabled = YES;
+    rightAxis.enabled = NO;
     rightAxis.drawGridLinesEnabled = NO;
     rightAxis.labelFont = [UIFont systemFontOfSize:10.f];
     rightAxis.labelCount = 8;
@@ -120,12 +122,14 @@
     [self slidersValueChanged:nil];
 }
 
+//=====BarChartVC==================================================
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+//=====BarChartVC==================================================
 - (void)updateChartData
 {
     if (self.shouldHideData)
@@ -136,54 +140,84 @@
     
 //DHS     [self setDataCount:_sliderX.value + 1 range:_sliderY.value];
     int monthCount = [rpd getStatsMonthCount];
-    int dataRange  = [rpd getStatsMaxForData : @"all"];
+    int dataRange  = [rpd getStatsMaxForData : @"all"];  //2/22 need change?
 
-    [self setDataCount:monthCount range:dataRange];
+    [self loadPlotData : monthCount range : dataRange];
 }
 
-- (void)setDataCount:(int)count range:(double)range
+//=====BarChartVC==================================================
+- (void)loadPlotData:(int)count range:(double)range
 {
     double start = 1.0;
     
-    NSMutableArray *yVals = [[NSMutableArray alloc] init];
-    
+    NSMutableArray *totalVals  = [[NSMutableArray alloc] init];
+    NSMutableArray *ltotalVals = [[NSMutableArray alloc] init];
+    NSMutableArray *ptotalVals = [[NSMutableArray alloc] init];
+
+    BOOL needTotals  = [plotType.lowercaseString containsString:@"total"];
+    BOOL needLTotals = [plotType.lowercaseString containsString:@"local"];
+    BOOL needPTotals = [plotType.lowercaseString containsString:@"processed"];
     for (int i = start; i < start + count + 1; i++)
     {
-//DHS         double mult = (range + 1);
-//DHS        double val = (double) (arc4random_uniform(mult));
-        double val = [rpd getTotalByMonth:i-1];
-        if (arc4random_uniform(100) < 25) {
-            [yVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val icon: [UIImage imageNamed:@"icon"]]];
-        } else {
-            [yVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+        double val;
+        if (needTotals)
+        {
+            val = [rpd getTotalByMonth:i-1];
+            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
         }
-
-    }
+        if (needLTotals)
+        {
+            val = [rpd getLocalTotalByMonth:i-1];
+            [ltotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+        }
+        if (needPTotals)
+        {
+            val = [rpd getProcessedTotalByMonth:i-1];
+            [ptotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+        }
+        //HUH?            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val icon: [UIImage imageNamed:@"icon"]]];
+    } //end int i
     
     BarChartDataSet *set1 = nil;
-    if (_chartView.data.dataSetCount > 0)
+    BarChartDataSet *set2 = nil;
+    BarChartDataSet *set3 = nil;
+    NSArray *blueColz  = @[ [UIColor colorWithRed:.6 green:.6 blue:.9 alpha:1] ];
+    NSArray *greenColz = @[ [UIColor colorWithRed:.5 green:.9 blue:.5 alpha:1] ];
+    NSArray *redColz   = @[ [UIColor colorWithRed:.9 green:.5 blue:.5 alpha:1] ];
+
+    if (needTotals)
     {
-        set1 = (BarChartDataSet *)_chartView.data.dataSets[0];
-        set1.values = yVals;
-        [_chartView.data notifyDataChanged];
-        [_chartView notifyDataSetChanged];
-    }
-    else
-    {
-        set1 = [[BarChartDataSet alloc] initWithValues:yVals label:@"The year 2017"];
-        [set1 setColors:ChartColorTemplates.material];
+        set1 = [[BarChartDataSet alloc] initWithValues:totalVals label:@"Totals"];
+        [set1 setColors: blueColz];
         set1.drawIconsEnabled = NO;
-        
-        NSMutableArray *dataSets = [[NSMutableArray alloc] init];
-        [dataSets addObject:set1];
-        
-        BarChartData *data = [[BarChartData alloc] initWithDataSets:dataSets];
-        [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:10.f]];
-        
-        data.barWidth = 0.9f;
-        
-        _chartView.data = data;
     }
+    if (needLTotals)
+    {
+        set2 = [[BarChartDataSet alloc] initWithValues:ltotalVals label:@"Local"];
+        [set2 setColors: greenColz];
+        set2.drawIconsEnabled = NO;
+    }
+    if (needPTotals)
+    {
+        set3 = [[BarChartDataSet alloc] initWithValues:ptotalVals label:@"Processed"];
+        [set3 setColors: redColz];
+        set3.drawIconsEnabled = NO;
+    }
+
+    NSMutableArray *dataSets = [[NSMutableArray alloc] init];
+    if (needTotals) [dataSets addObject:set1];
+    if (needLTotals)[dataSets addObject:set2];
+    if (needPTotals)[dataSets addObject:set3];
+
+    BarChartData *data = [[BarChartData alloc] initWithDataSets:dataSets];
+    [data setValueFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:10.f]];
+    
+    data.barWidth = 0.9f;
+    
+    _chartView.data = data;
+    //DHS 2/22 
+    [_chartView animateWithYAxisDuration:3.0];
+
 }
 
 - (void)optionTapped:(NSString *)key

@@ -464,7 +464,7 @@
 //=============(smartProducts)=====================================================
 -(void) loadKeywordsAndTyposFromParse
 {
-    NSLog(@"loadKeywordsAndTyposFromParse...");
+    //NSLog(@"loadKeywordsAndTyposFromParse...");
     PFQuery *query = [PFQuery queryWithClassName:@"Keywords"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error) {

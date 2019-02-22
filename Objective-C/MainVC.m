@@ -3,7 +3,7 @@
 //  ChartsDemo-iOS
 //
 //  Created by Dave Scruton on 2/17/19.
-//  Copyright © 2019 dcg. All rights reserved.
+//  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
 //   ray wenderlich tutorial on swift charts:
 //    https://medium.com/@skoli/using-realm-and-charts-with-swift-3-in-ios-10-40c42e3838c0
@@ -17,11 +17,24 @@
 @implementation MainVC
 
 
+//=============MainVC=====================================================
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
 
     }
     return self;
+}
+
+- (void)encodeWithCoder:(nonnull NSCoder *)aCoder {
+    
+}
+
+
+
+//=============MainVC=====================================================
+- (void)viewDidLayoutSubviews
+{
+
 }
 
 //=============MainVC=====================================================
@@ -32,7 +45,7 @@
     viewHit = (int)csz.height;
     viewW2  = viewWid/2;
     viewH2  = viewHit/2;
-
+    
     // Do any additional setup after loading the view.
     int xi,yi,xs,ys;
     //CLUGEY! makes sure landscape òrientation doesn't set up NAVbar wrong`
@@ -55,30 +68,141 @@
     // Add spinner busy indicator...
     spv = [[spinnerView alloc] initWithFrame:CGRectMake(0, 0, (int)csz.width, (int)csz.height)];
     [self.view addSubview:spv];
-
+    
     
     //NOTE: this is a singleton, so there should be ONLY ONE Delegate!!!
     //  what if a child window needs to load data???
     //  may want to switch to NSNotification?
     dataLoaded  = FALSE;
     statsLoaded = FALSE;
-
-   //ONLY need for parse load... [spv start : @"Read Plot Data..."];
+    
+    //ONLY need for parse load... [spv start : @"Read Plot Data..."];
     rpd = RawPlotData.sharedInstance;
     rpd.delegate = self;
     
+    plotOptionsTable = [[UITableView alloc] init];
+    plotOptionsTable.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.4f];
+    xs = 320;
+    xi = viewW2 - xs/2;
+    yi = 100;
+    ys = viewHit - yi - 80;
+    plotOptionsTable.frame = CGRectMake(xi,yi,xs,ys);
+    plotOptionsTable.delegate = self;
+    plotOptionsTable.dataSource = self;
+    [plotOptionsTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.view addSubview:plotOptionsTable];
+    plotOptionsTable.hidden = TRUE;
 
-}
 
-//=============OCR MainVC=====================================================
+    [self initOptions];
+    tableOptions = lineOptions;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startLoadingData:)
+                                                 name:@"vendorsLoaded" object:nil];
+    
+    [self resetOverlay];
+
+} //end viewDidLoad
+
+//=============MainVC=====================================================
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+}
+
+//=============MainVC=====================================================
+- (IBAction)lineSelect:(id)sender
+{
+    NSLog(@" line plots...");
+    funcSelect   = @"line";
+    tableOptions = lineOptions; //Assign table choices
+    [self animateOverlay:sender];
+}
+
+//=============MainVC=====================================================
+- (IBAction)barSelect:(id)sender
+{
+    NSLog(@" bar plots...");
+    funcSelect = @"bar";
+    tableOptions = barOptions; //Assign table choices
+    [self animateOverlay:sender];
+}
+
+//=============MainVC=====================================================
+- (IBAction)donutSelect:(id)sender
+{
+    NSLog(@" donut plots...");
+    funcSelect = @"pie";
+    tableOptions = pieOptions; //Assign table choices
+    [self animateOverlay:sender];
+}
+
+//=============MainVC=====================================================
+- (IBAction)scatterSelect:(id)sender
+{
+    NSLog(@" scatter plots...");
+    funcSelect = @"scatter";
+    tableOptions = scatterOptions; //Assign table choices
+    [self animateOverlay:sender];
+}
+
+//=============MainVC=====================================================
+// Items to appear in the selection table based on plot type
+-(void) initOptions
+{
+    lineOptions    = @[ @"Totals",@"Total vs Local",@"Total vs Processed",@"Back"];
+    barOptions     = @[ @"Totals",@"Total vs Local",@"Total vs Processed",@"Back"];
+    pieOptions     = @[ @"PIETotals",@"Total vs Local",@"Total vs Processed",@"Back"];
+    scatterOptions = @[ @"STotals",@"Total vs Local",@"Total vs Processed",@"Back"];
+}
+
+//=============MainVC=====================================================
+-(void) resetOverlay
+{
+    _overlayView.hidden = TRUE;
+    _buttonsView.alpha  = 1.0;
+    plotOptionsTable.hidden = TRUE;
     
 }
 
+//=============MainVC=====================================================
+-(void) resetTableFrame
+{
+    int xi,yi,xs,ys;
+    xs = 300;
+    ys = 60 * (int)tableOptions.count;
+    xi = viewW2 - xs/2;
+    yi = viewH2 - ys/2;
+    plotOptionsTable.frame = CGRectMake(xi,yi,xs,ys);
 
-//=============OCR MainVC=====================================================
+}
+
+//=============MainVC=====================================================
+-(void) animateOverlay : (id) sender
+{
+    UIButton *bbb        = (UIButton *)sender;
+    _animImage.frame     = bbb.frame;
+    _buttonsView.alpha   = 0.3;
+    float adur           = 1.0;
+    _animImage.image     = bbb.currentBackgroundImage;
+    _overlayView.hidden  = FALSE;
+    CGRect rr2 = _overlayView.frame;
+    rr2.origin.x = 0;
+    rr2.origin.y = 0;
+    [UIView animateWithDuration:adur
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         self.animImage.frame = rr2; //Anim Image up to full frame
+                     }
+                     completion:^(BOOL finished){
+                         [self resetTableFrame];
+                         [self->plotOptionsTable reloadData];
+                         self->plotOptionsTable.hidden = FALSE;
+                     }
+     ];
+} //end animateOverlay
+
+//=============MainVC=====================================================
 -(void) setupNavBar
 {
     nav.backgroundColor = [UIColor redColor];
@@ -122,7 +246,7 @@
     
 }
 
-//=============OCR MainVC=====================================================
+//=============MainVC=====================================================
 -(void) menu
 {
     NSMutableAttributedString *tatString = [[NSMutableAttributedString alloc]initWithString:@"Plot Functions"];
@@ -132,15 +256,15 @@
                                                                    message:nil
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     [alert setValue:tatString forKey:@"attributedTitle"];
-
+    
     //Only have plot options if there is something to plot!
     if (statsLoaded)
     {
         [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Bar Chart",nil)
                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                      [self setupChart:0];
+                                                      [self setupBarChart];
                                                   }]];
-
+        
     }
     [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil)
                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -150,19 +274,96 @@
     
 } //end menu
 
-//which 0 = linechart
-//=============<NavButtonsDelegate>=====================================================
--(void) setupChart : (int) which
+//=============MainVC=====================================================
+//  Called when "vendors Loaded" notification comes in...
+- (void)startLoadingData:(NSNotification *)notification
+{
+    NSLog(@" loading data...");
+    [rpd loadDataFromBuiltinCSV: @"fy2018"];
+    //Compute stats from EXP data...
+    [rpd getStatsFromEXP];
+} //end startLoadingData
+
+
+
+//=============MainVC=====================================================
+// 2/22 use string for plot type
+-(void) setupBarChart
 {
     BarChartViewController *vc = [[BarChartViewController alloc] init];
-//    LineChart1ViewController *vc = [[LineChart1ViewController alloc] init];
-    [vc setPlotType:@"months"]; //12 month chart...
-    [vc setPlotTitle:@"Totals By Month"];
+    [vc setPlotType:ptypeSelect];  //selected plot type, total, total vs local, etc
+    [vc setPlotTitle:ptypeSelect]; //this needs improvement
     [vc setPlotXYRanges:12 :50000];
     [self.navigationController pushViewController:vc animated:YES];
-//    [self presentViewController:vc animated:TRUE completion:nil];
     
 }
+
+//=============MainVC=====================================================
+-(void) setupLineChart
+{
+    LineChart1ViewController *vc = [[LineChart1ViewController alloc] init];
+    [vc setPlotType:ptypeSelect];  //selected plot type, total, total vs local, etc
+    [vc setPlotTitle:ptypeSelect]; //this needs improvement
+    [vc setPlotXYRanges:12 :50000];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+#pragma mark - UITableViewDelegate
+
+
+//=============MainVC=====================================================
+- (UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"Cell";
+    int row = (int)indexPath.row;
+    //NSLog(@" cell row %d",row);
+    UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    cell.textLabel.text = tableOptions[row];
+    cell.backgroundColor = [UIColor clearColor];
+    return cell;
+} //end cellForRowAtIndexPath
+
+
+//=============MainVC=====================================================
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return tableOptions.count;
+}
+
+
+
+
+//=============MainVC=====================================================
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+//=============MainVC=====================================================
+// 2/22 hook up
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    ptypeSelect = cell.textLabel.text;
+    NSLog(@" duh %@",ptypeSelect);
+    if ([ptypeSelect.lowercaseString isEqualToString:@"back"])
+    {
+        [self resetOverlay];
+    }
+    else //Go to a plot...
+    {
+        if ([funcSelect isEqualToString:@"line"]) [self setupLineChart];
+        if ([funcSelect isEqualToString:@"bar"])  [self setupBarChart];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+
+    
+} //end didSelectRowAtIndexPath
+
 
 
 #pragma mark - NavButtonsDelegate
@@ -174,7 +375,7 @@
     
     if (which == 0) //THis is now a multi-function popup...
     {
-                [self menu];
+        [self menu];
     }
     else if (which == 1) //THis is now a multi-function popup...
     {
@@ -183,18 +384,14 @@
         [rpd loadDataFromBuiltinCSV: @"fy2018"];
         //Compute stats from EXP data...
         [rpd getStatsFromEXP];
-
+        
         //[rpd getStats];
-
+        
         //        [self dbmenu];
     }
     else if (which == 2) //Templates / settings?
     {
-        //        [self performSegueWithIdentifier:@"helpSegue" sender:@"mainVC"];
-        
-        // [self testit];
-        // return;
-        // [self performSegueWithIdentifier:@"templateSegue" sender:@"mainVC"];
+        [self resetOverlay];
     }
     //    if (which == 3 && vv.loaded) //batch? (2/5 make sure vendors are there first!)
     //    {
@@ -231,8 +428,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self->spv stop];
     });
-
+    
 }
+
+
 
 
 @end

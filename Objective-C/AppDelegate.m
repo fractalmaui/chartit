@@ -1,10 +1,15 @@
 //
+//     _                ____       _                  _
+//    / \   _ __  _ __ |  _ \  ___| | ___  __ _  __ _| |_ ___
+//   / _ \ | '_ \| '_ \| | | |/ _ \ |/ _ \/ _` |/ _` | __/ _ \
+//  / ___ \| |_) | |_) | |_| |  __/ |  __/ (_| | (_| | ||  __/
+// /_/   \_\ .__/| .__/|____/ \___|_|\___|\__, |\__,_|\__\___|
+//         |_|   |_|                      |___/
+//
 //  AppDelegate.m
 //  ChartsDemo
 //
-//  Copyright 2015 Daniel Cohen Gindi & Philipp Jahoda
-//  A port of MPAndroidChart for iOS
-//  Licensed under Apache License 2.0
+//  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
 //  https://github.com/danielgindi/Charts
 //
@@ -21,9 +26,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    MainVC *vc = [[MainVC alloc] init];
+    MainVC *mvc = [[MainVC alloc] init];
     // 2/17 skip nav for now, don't need it. plus the titlebar isn't accessible??
-    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+    UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:mvc];
     
     _window.rootViewController = nvc;
     [_window makeKeyAndVisible];
@@ -38,6 +43,7 @@
         // ...force a load also, since object may already have been created before DB is ready!
     }]];
     vv = [Vendors sharedInstance]; //Load vendors as early as possible!
+    vv.delegate = self;
     return YES;
 }
 
@@ -62,5 +68,27 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
+//====(TestOCR AppDelegate)==========================================
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    
+    return NO;
+}
+
+
+-(void) didReadVendorsFromParse
+{
+    NSLog(@" read vendors...");
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"vendorsLoaded"
+                                                        object:nil userInfo:nil];
+}
+-(void) errorReadingVendorsFromParse
+{
+    NSLog(@" error reading vendors...");
+
+}
+
+
 
 @end

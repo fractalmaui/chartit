@@ -1,9 +1,15 @@
 //
+//   ____                ____  _       _   ____        _
+//  |  _ \ __ ___      _|  _ \| | ___ | |_|  _ \  __ _| |_ __ _
+//  | |_) / _` \ \ /\ / / |_) | |/ _ \| __| | | |/ _` | __/ _` |
+//  |  _ < (_| |\ V  V /|  __/| | (_) | |_| |_| | (_| | || (_| |
+//  |_| \_\__,_| \_/\_/ |_|   |_|\___/ \__|____/ \__,_|\__\__,_|
+//
 //  RawPlotData.m
 //  Chartit
 //
 //  Created by Dave Scruton on 2/18/19.
-//  Copyright © 2019 dcg. All rights reserved.
+//  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
 
 #import "RawPlotData.h"
@@ -68,7 +74,7 @@ static RawPlotData *sharedInstance = nil;
     {
         EXPStats *estats   = [[EXPStats alloc] init];
         NSString *monthStr = [estats getMonthName:month];
-        NSLog(@"%@===========================================",monthStr );
+        //NSLog(@"%@===========================================",monthStr );
         [estats clear]; //Clear stats...
         //loop over allll exp objects
         for (int i=0;i<rcount;i++)
@@ -113,7 +119,7 @@ static RawPlotData *sharedInstance = nil;
                 [estats addCatAmount :vindex :(int)catIndex :amount : proFlag];
             } //end if rmonth
         }    //end for i
-        [estats dump];
+        //[estats dump];
         if (estats.allVendorsAmount > 0)
         {
             allVendorsMax  = MAX(allVendorsMax ,estats.allVendorsMax);
@@ -236,6 +242,7 @@ static RawPlotData *sharedInstance = nil;
 {
     if (m < 0) return FALSE;
     if (m > 11) return FALSE;
+    if (m >= monthlyStats.count) return FALSE;
     return TRUE;
 } //end isMonthLegal
 
@@ -250,10 +257,26 @@ static RawPlotData *sharedInstance = nil;
 -(float) getTotalByMonth : (int) month_0_to_11
 {
     if (![self isMonthLegal:month_0_to_11]) return 0.0;
-    if (month_0_to_11 >= monthlyStats.count) return 0.0;
     _expstats = monthlyStats[month_0_to_11];
     return [self getDollarsAndCentsCrappily : _expstats.allVendorsAmount];
 } //end getTotalByMonth
+
+//=============(RawPlotData)=====================================================
+-(float) getLocalTotalByMonth : (int) month_0_to_11
+{
+    if (![self isMonthLegal:month_0_to_11]) return 0.0;
+    _expstats = monthlyStats[month_0_to_11];
+    return [self getDollarsAndCentsCrappily : _expstats.allVendorsLAmount];
+} //end getLocalTotalByMonth
+
+//=============(RawPlotData)=====================================================
+-(float) getProcessedTotalByMonth : (int) month_0_to_11
+{
+    if (![self isMonthLegal:month_0_to_11]) return 0.0;
+    _expstats = monthlyStats[month_0_to_11];
+    return [self getDollarsAndCentsCrappily : _expstats.allVendorsPAmount];
+} //end getLocalTotalByMonth
+
 
 //=============(RawPlotData)=====================================================
 -(void) loadConstants
@@ -364,7 +387,7 @@ static RawPlotData *sharedInstance = nil;
             if (values.count > 2) //Did we get something?
             {
                 //OK ready to write!
-                if (writeCount % 100 == 0) NSLog(@" write %d/%d [%@]",writeCount,loadCount,values[2]);
+                //if (writeCount % 100 == 0) NSLog(@" write %d/%d [%@]",writeCount,loadCount,values[2]);
                 [et addRecordFromArrays : idate :  fields : values];
                 writeCount++;
             }
