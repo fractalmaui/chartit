@@ -52,6 +52,15 @@
     int catNPRSums[MAX_CCATEGORIES];
     int catNPRCSums[MAX_CCATEGORIES];
 
+    int catLOAmounts[MAX_CVENDORS][MAX_CCATEGORIES];
+    int catLOCounts[MAX_CVENDORS][MAX_CCATEGORIES];
+    int catNLOAmounts[MAX_CVENDORS][MAX_CCATEGORIES];
+    int catNLOCounts[MAX_CVENDORS][MAX_CCATEGORIES];
+    int catLOSums[MAX_CCATEGORIES];
+    int catLOCSums[MAX_CCATEGORIES];
+    int catNLOSums[MAX_CCATEGORIES];
+    int catNLOCSums[MAX_CCATEGORIES];
+
 }
 
 @property (nonatomic , assign) int month;
@@ -74,10 +83,15 @@
 -(void) addLAmount : (int) index : (int) a ;
 -(void) addPAmount : (int) index : (int) a ;
 -(void) addFAmount : (int) index : (int) a;
--(void) addCatAmount : (int) vindex : (int) cindex : (int) a : (BOOL) proFlag;
+-(void) addCatAmount : (int) vindex : (int) cindex : (int) a : (BOOL) proFlag : (BOOL) locFlag;
 -(void) clear;
 -(void) dump;
 -(NSUInteger) getCategoryIndex : (NSString*) catstr;
+-(int)  getCategoryPRSum : (int) cindex;
+-(int)  getCategoryNPRSum : (int) cindex;
+-(int)  getCategoryLOSum : (int) cindex;
+-(int)  getCategoryNLOSum : (int) cindex;
+
 -(NSString *) getMonthName : (int) index1To12;
 -(BOOL) isFoodItem : (NSString *) cat;
 

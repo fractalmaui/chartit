@@ -76,8 +76,8 @@ class PieChartViewController: DemoBaseViewController {
                                      label: parties[i % parties.count],
                                      icon: #imageLiteral(resourceName: "icon"))
         }
-        
-        let set = PieChartDataSet(values: entries, label: "Election Results")
+        //2/27 DHS nothing here for now
+        let set = PieChartDataSet(values: entries, label: " ")
         set.drawIconsEnabled = false
         set.sliceSpace = 2
         

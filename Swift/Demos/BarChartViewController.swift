@@ -15,8 +15,9 @@ class BarChartViewController: DemoBaseViewController {
     @IBOutlet var sliderX: UISlider!
     @IBOutlet var sliderY: UISlider!
     @IBOutlet var sliderTextX: UITextField!
-    @IBOutlet var sliderTextY: UITextField!
-    
+    @IBOutlet var sliderTextY: UITextField!    
+    @IBOutlet var percentSwitch: UISwitch!    
+    @IBOutlet weak var percentLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -149,4 +150,10 @@ class BarChartViewController: DemoBaseViewController {
         
         self.updateChartData()
     }
+    
+    @IBAction func switchChanged(_ sender: Any)
+    {
+        self.updateChartData()
+    }
+
 }

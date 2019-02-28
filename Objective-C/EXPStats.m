@@ -50,6 +50,10 @@
             catPRCounts[i][j] = 0;
             catNPRAmounts[i][j] = 0;
             catNPRCounts[i][j] = 0;
+            catLOAmounts[i][j] = 0;
+            catLOCounts[i][j] = 0;
+            catNLOAmounts[i][j] = 0;
+            catNLOCounts[i][j] = 0;
         }
     }
     
@@ -64,6 +68,10 @@
         catPRCSums[j] = 0;
         catNPRSums[j]  = 0;
         catNPRCSums[j] = 0;
+        catLOSums[j]  = 0;
+        catLOCSums[j] = 0;
+        catNLOSums[j]  = 0;
+        catNLOCSums[j] = 0;
     }
     foodSum = processedSum = localSum = 0;
     nonprocessedSum = nonlocalSum = 0;
@@ -118,6 +126,35 @@
 -(NSUInteger) getCategoryIndex : (NSString*) catstr
 {
     return [categories indexOfObject:catstr.lowercaseString];
+}
+
+//=============(EXPStats)=====================================================
+-(int)  getCategoryLOSum : (int) cindex
+{
+    if (cindex < 0 || cindex >= MAX_CCATEGORIES) return 0;
+    return catLOSums[cindex];
+}
+
+//=============(EXPStats)=====================================================
+-(int)  getCategoryNLOSum : (int) cindex
+{
+    if (cindex < 0 || cindex >= MAX_CCATEGORIES) return 0;
+    return catNLOSums[cindex];
+}
+
+
+//=============(EXPStats)=====================================================
+-(int)  getCategoryPRSum : (int) cindex
+{
+    if (cindex < 0 || cindex >= MAX_CCATEGORIES) return 0;
+    return catPRSums[cindex];
+}
+
+//=============(EXPStats)=====================================================
+-(int)  getCategoryNPRSum : (int) cindex
+{
+    if (cindex < 0 || cindex >= MAX_CCATEGORIES) return 0;
+    return catNPRSums[cindex];
 }
 
 //=============(EXPStats)=====================================================
@@ -202,7 +239,7 @@
 
 
 //=============(EXPStats)=====================================================
--(void) addCatAmount : (int) vindex : (int) cindex : (int) a : (BOOL) proFlag
+-(void) addCatAmount : (int) vindex : (int) cindex : (int) a : (BOOL) proFlag : (BOOL) locFlag
 {
     if ([self isIndexLegal:vindex] && [self isCatIndexLegal:cindex])
     {
@@ -219,6 +256,20 @@
             catNPRCounts[vindex][cindex]++;
             catNPRSums[cindex]+=a;
             catNPRCSums[cindex]++;
+        }
+        if (locFlag)
+        {
+            catLOAmounts[vindex][cindex]+=a;
+            catLOCounts[vindex][cindex]++;
+            catLOSums[cindex]+=a;
+            catLOCSums[cindex]++;
+        }
+        else
+        {
+            catNLOAmounts[vindex][cindex]+=a;
+            catNLOCounts[vindex][cindex]++;
+            catNLOSums[cindex]+=a;
+            catNLOCSums[cindex]++;
         }
     }
 }

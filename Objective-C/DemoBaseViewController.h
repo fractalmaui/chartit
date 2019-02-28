@@ -17,7 +17,10 @@
     RawPlotData *rpd;
     NSString* plotType;
     NSString* pTitle;
+    NSString* month;
+    int monthNumber;
     int xRange,yRange;
+    BOOL byPercent;
 @protected
     NSArray *parties;
 }
@@ -31,6 +34,7 @@
 - (void) setPlotType : (NSString *)ptype;
 - (void) setPlotTitle : (NSString *)tstr;
 - (void) setPlotXYRanges : (int) xr : (int) yr;
+- (void) setMonth : (NSString *)mstr : (int) mnum;
 - (void)updateChartData;
 
 - (void)setupPieChartView:(PieChartView *)chartView;

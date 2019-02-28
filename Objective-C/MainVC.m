@@ -93,6 +93,8 @@
     [self.view addSubview:plotOptionsTable];
     plotOptionsTable.hidden = TRUE;
 
+    monthSelect = @"01-JUL";
+    monthNumber = 0;
 
     [self initOptions];
     tableOptions = lineOptions;
@@ -151,7 +153,10 @@
 {
     lineOptions    = @[ @"Totals",@"Total vs Local",@"Total vs Processed",@"Back"];
     barOptions     = @[ @"Totals",@"Total vs Local",@"Total vs Processed",@"Back"];
-    pieOptions     = @[ @"PIETotals",@"Total vs Local",@"Total vs Processed",@"Back"];
+    pieOptions     = @[ @"Total by Categories",
+                        @"Processed by Categories",@"Non-Processed by Categories",
+                        @"Local by Categories",@"Non-Local by Categories",
+                        @"Local vs Total",@"Processed vs Total",@"FY Month",@"Back"];
     scatterOptions = @[ @"STotals",@"Total vs Local",@"Total vs Processed",@"Back"];
 }
 
@@ -246,6 +251,38 @@
     
 }
 
+
+//=============MainVC=====================================================
+// 2/27 choose fiscal month for pie chart
+-(void) monthMenu
+{
+    NSArray *    fiscalMonths = @[ @"01-JUL", @"02-AUG", @"03-SEP", @"04-OCT",
+                                   @"05-NOV", @"06-DEC", @"07-JAN", @"08-FEB",
+                                   @"09-MAR", @"10-APR", @"11-MAY", @"12-JUN"
+                                ];
+    NSMutableAttributedString *tatString = [[NSMutableAttributedString alloc]initWithString:@"Choose Month"];
+    [tatString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:30] range:NSMakeRange(0, tatString.length)];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:
+                                NSLocalizedString(@"Choose Month",nil)
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    [alert setValue:tatString forKey:@"attributedTitle"];
+    int count = 0;
+    for (NSString *month in fiscalMonths)
+    {
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(month,nil)
+                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                      self->monthSelect = month;
+                                                      self->monthNumber = count;
+                                                  }]];
+        count++;
+    }
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil)
+                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                              }]];
+    [self presentViewController:alert animated:YES completion:nil];
+} //end monthMenu
+
 //=============MainVC=====================================================
 -(void) menu
 {
@@ -309,6 +346,17 @@
     
 }
 
+//=============MainVC=====================================================
+-(void) setupPieChart
+{
+    PieChartViewController *vc = [[PieChartViewController alloc] init];
+    [vc setPlotType:ptypeSelect];  //selected plot type, total, total vs local, etc
+    [vc setPlotTitle:ptypeSelect]; //this needs improvement
+    [vc setMonth:monthSelect :monthNumber];
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
 #pragma mark - UITableViewDelegate
 
 
@@ -340,7 +388,7 @@
 //=============MainVC=====================================================
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60;
+    return 40;
 }
 
 //=============MainVC=====================================================
@@ -349,15 +397,20 @@
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     ptypeSelect = cell.textLabel.text;
-    NSLog(@" duh %@",ptypeSelect);
+    NSLog(@" ptypeselect %@",ptypeSelect);
     if ([ptypeSelect.lowercaseString isEqualToString:@"back"])
     {
         [self resetOverlay];
+    }
+    else if ([ptypeSelect.lowercaseString containsString:@"month"])
+    {
+        [self monthMenu];
     }
     else //Go to a plot...
     {
         if ([funcSelect isEqualToString:@"line"]) [self setupLineChart];
         if ([funcSelect isEqualToString:@"bar"])  [self setupBarChart];
+        if ([funcSelect isEqualToString:@"pie"])  [self setupPieChart];
     }
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
@@ -393,10 +446,6 @@
     {
         [self resetOverlay];
     }
-    //    if (which == 3 && vv.loaded) //batch? (2/5 make sure vendors are there first!)
-    //    {
-    //        [self performSegueWithIdentifier:@"batchSegue" sender:@"mainVC"];
-    //    }
     
 } //end didSelectNavButton
 

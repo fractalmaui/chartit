@@ -13,6 +13,7 @@
 #import "spinnerView.h"
 #import "LineChart1ViewController.h"
 #import "BarChartViewController.h"
+#import "PieChartViewController.h"
 #import "RawPlotData.h"
 
 #define NAV_HOME_BUTTON 0
@@ -35,6 +36,8 @@
     RawPlotData *rpd;
     NSString *funcSelect;
     NSString *ptypeSelect;
+    NSString *monthSelect;
+    int monthNumber;
     NSArray *lineOptions;
     NSArray *barOptions;
     NSArray *pieOptions;

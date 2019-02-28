@@ -15,7 +15,8 @@
 
 @interface LineChart1ViewController : DemoBaseViewController
 {
-    BOOL needSliders;
+    BOOL needSliders,needTotals,needLTotals,needPTotals;
+
 }
 
 @end

@@ -20,6 +20,8 @@
 @property (nonatomic, strong) IBOutlet UISlider *sliderY;
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextX;
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextY;
+@property (weak, nonatomic) IBOutlet UISwitch *percentSwitch;
+@property (nonatomic, strong) IBOutlet UILabel *percentLabel;
 
 @end
 
@@ -28,18 +30,24 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     //DHS CHANGES-------
     self.title = pTitle;
     needSliders = FALSE;
-//    if (plotType == 99) //Special type w/ sliders
-//    {
-//        needSliders = TRUE;
-//    }
+    needTotals  = [plotType.lowercaseString containsString:@"total"];
+    needLTotals = [plotType.lowercaseString containsString:@"local"];
+    needPTotals = [plotType.lowercaseString containsString:@"processed"];
+    
+
+    //    if (plotType == 99) //Special type w/ sliders
+    //    {
+    //        needSliders = TRUE;
+    //    }
     _sliderX.hidden = !needSliders;
     _sliderY.hidden = !needSliders;
     _sliderTextX.hidden = !needSliders;
     _sliderTextY.hidden = !needSliders;
-
+    
     //END DHS CHANGES-------
 
     self.options = @[
@@ -70,7 +78,7 @@
     _chartView.drawGridBackgroundEnabled = NO;
 
     // x-axis limit line
-    ChartLimitLine *llXAxis = [[ChartLimitLine alloc] initWithLimit:xRange label:@"Index 10"];
+    ChartLimitLine *llXAxis = [[ChartLimitLine alloc] initWithLimit:10.0 label:@"Index 10"];
     llXAxis.lineWidth = 4.0;
     llXAxis.lineDashLengths = @[@(10.f), @(10.f), @(0.f)];
     llXAxis.labelPosition = ChartLimitLabelPositionRightBottom;
@@ -86,38 +94,22 @@
     xAxis.labelPosition = XAxisLabelPositionBottom;
     xAxis.labelFont = [UIFont systemFontOfSize:10.f];
     xAxis.drawGridLinesEnabled = NO;
-    xAxis.granularity = 1.0;  
+    xAxis.granularity = 1.0;
     xAxis.labelCount = 7;
     xAxis.valueFormatter = [[FiscalAxisValueFormatter alloc] initForChart:_chartView];
-
+    
 #endif
-    
-    ChartYAxis *leftAxis = _chartView.leftAxis;
 
-    if (needLimits) //DHS
-    {
-        ChartLimitLine *ll1 = [[ChartLimitLine alloc] initWithLimit:150.0 label:@"Upper Limit"];
-        ll1.lineWidth = 4.0;
-        ll1.lineDashLengths = @[@5.f, @5.f];
-        ll1.labelPosition = ChartLimitLabelPositionRightTop;
-        ll1.valueFont = [UIFont systemFontOfSize:10.0];
-        
-        ChartLimitLine *ll2 = [[ChartLimitLine alloc] initWithLimit:-30.0 label:@"Lower Limit"];
-        ll2.lineWidth = 4.0;
-        ll2.lineDashLengths = @[@5.f, @5.f];
-        ll2.labelPosition = ChartLimitLabelPositionRightBottom;
-        ll2.valueFont = [UIFont systemFontOfSize:10.0];
-        [leftAxis removeAllLimitLines];
-        [leftAxis addLimitLine:ll1];
-        [leftAxis addLimitLine:ll2];
-    }
-    
-    leftAxis.axisMaximum = (double)yRange; //DHS
+    ChartYAxis *leftAxis = _chartView.leftAxis;
+    [leftAxis removeAllLimitLines];
+//    [leftAxis addLimitLine:ll1];
+//    [leftAxis addLimitLine:ll2];
+//2/27    leftAxis.axisMaximum = (double)yRange;
     leftAxis.axisMinimum = 0.0;            //DHS
     leftAxis.gridLineDashLengths = @[@1.f, @1000.f]; //DHS $1000 increments, this needs to vary by plot type!
     leftAxis.drawZeroLineEnabled = YES;
     leftAxis.drawLimitLinesBehindDataEnabled = YES;
-    
+
     _chartView.rightAxis.enabled = NO;
     
     //[_chartView.viewPortHandler setMaximumScaleY: 2.f];
@@ -155,8 +147,18 @@
         _chartView.data = nil;
         return;
     }
+    byPercent = _percentSwitch.isOn;
+    NSLog(@" bp %d",byPercent);
     int monthCount = [rpd getStatsMonthCount];
     int dataRange  = [rpd getStatsMaxForData : @"all"];  //2/22 need change?
+    NSLog(@" datarange %d",dataRange);
+    // 2/27
+    ChartYAxis *leftAxis = _chartView.leftAxis;
+// 2/27 auto scaling on axis?
+//    if (byPercent && (needLTotals || needPTotals))
+//        leftAxis.axisMaximum = 100.0;
+//    else
+//        leftAxis.axisMaximum = (double)yRange;
 
     [self loadPlotData:monthCount range:(double)dataRange];
 }
@@ -168,37 +170,43 @@
     NSMutableArray *ltotalVals = [[NSMutableArray alloc] init];
     NSMutableArray *ptotalVals = [[NSMutableArray alloc] init];
     
-    BOOL needTotals  = [plotType.lowercaseString containsString:@"total"];
-    BOOL needLTotals = [plotType.lowercaseString containsString:@"local"];
-    BOOL needPTotals = [plotType.lowercaseString containsString:@"processed"];
+    //2/27
+    _percentSwitch.hidden = !(needLTotals || needPTotals);
+    _percentLabel.hidden  = !(needLTotals || needPTotals);
 
     double start = 1.0;
-
+    
     for (int i = start; i < start + count + 1; i++)
     {
-        double val;
+        double valTo,valLo,valPr;
+        valTo = valLo = valPr = 0.0;
         if (needTotals)
         {
-            val = [rpd getTotalByMonth:i-1];
-            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+            valTo = [rpd getTotalByMonth:i-1];
+            if (byPercent)
+                [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:100.0]];
+            else
+                [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:valTo]];
         }
         if (needLTotals)
         {
-            val = [rpd getLocalTotalByMonth:i-1];
-            [ltotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+            valLo = [rpd getLocalTotalByMonth:i-1];
+            if (byPercent) valLo = 100.0 * (valLo / valTo);
+            [ltotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:valLo]];
         }
         if (needPTotals)
         {
-            val = [rpd getProcessedTotalByMonth:i-1];
-            [ptotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+            valPr = [rpd getProcessedTotalByMonth:i-1];
+            if (byPercent) valPr = 100.0 * (valPr / valTo);
+            [ptotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:valPr]];
         }
         //HUH?            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val icon: [UIImage imageNamed:@"icon"]]];
     } //end int i
-
+    
     LineChartDataSet *set1 = nil;
     LineChartDataSet *set2 = nil;
     LineChartDataSet *set3 = nil;
-
+    
     if (needTotals)
     {
         set1 = [[LineChartDataSet alloc] initWithValues:totalVals label:@"Totals"];
@@ -214,15 +222,15 @@
         set3 = [[LineChartDataSet alloc] initWithValues:ptotalVals label:@"Processed"];
         set3.drawIconsEnabled = NO;
     }
-
-//    set1 = [[LineChartDataSet alloc] initWithValues:values label:@"DataSet 1"];
-//        set1.drawIconsEnabled = NO;
+    
+    //    set1 = [[LineChartDataSet alloc] initWithValues:values label:@"DataSet 1"];
+    //        set1.drawIconsEnabled = NO;
     NSMutableArray *dataSets = [[NSMutableArray alloc] init];
     //Note colors are AARRBBGG!
     NSArray *colorz = @[@"#ff5555ee",@"#ff55ee55",@"#ffee5555"];
     NSArray *dashlens1 = @[@6.0f,@7.0f,@8.0f];
     NSArray *dashlens2 = @[@3.0f,@2.0f,@1.0f];
-
+    
     for (int scount = 0;scount<3;scount++)
     {
         LineChartDataSet *nextSet;
@@ -234,7 +242,7 @@
         }
         if (nextSet != nil)
         {
-//            nextSet.lineDashLengths = @[@5.f, @2.5f];
+            //            nextSet.lineDashLengths = @[@5.f, @2.5f];
             nextSet.lineDashLengths = @[dashlens1[scount], dashlens2[scount]];
             nextSet.highlightLineDashLengths = @[dashlens1[scount], dashlens2[scount]];
             [nextSet setColor:UIColor.blackColor];
@@ -343,6 +351,12 @@
     
     [self updateChartData];
 }
+
+- (IBAction)percentChanged:(id)sender
+{
+    [self updateChartData];
+}
+
 
 #pragma mark - ChartViewDelegate
 

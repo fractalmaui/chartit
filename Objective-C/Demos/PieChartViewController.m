@@ -28,7 +28,8 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Pie Chart";
+    NSString *ptit = [NSString stringWithFormat:@"%@ : %@",pTitle,month];
+    self.title = ptit;
     
     self.options = @[
                      @{@"key": @"toggleValues", @"label": @"Toggle Y-Values"},
@@ -92,12 +93,40 @@
     
     NSMutableArray *values = [[NSMutableArray alloc] init];
     
-    for (int i = 0; i < count; i++)
-    {
-        [values addObject:[[PieChartDataEntry alloc] initWithValue:(arc4random_uniform(mult) + mult / 5) label:parties[i % parties.count] icon: [UIImage imageNamed:@"icon"]]];
-    }
+    float total = [rpd getTotalByMonth:monthNumber];
+    int numcats = rpd.categoryCount;
     
-    PieChartDataSet *dataSet = [[PieChartDataSet alloc] initWithValues:values label:@"Election Results"];
+    BOOL needNonLocal,needLocal,needNonProcessed,needProcessed,needTotal;
+    needTotal                            = ([plotType.lowercaseString containsString:@"total"]);
+    needNonLocal                         = ([plotType.lowercaseString containsString:@"non-local"]);
+    needLocal                            = FALSE;
+    if (!needNonLocal) needLocal         = ([plotType.lowercaseString containsString:@"local"]);
+    needNonProcessed                     = ([plotType.lowercaseString containsString:@"non-processed"]);
+    needProcessed                        = FALSE;
+    if (!needNonProcessed) needProcessed = ([plotType.lowercaseString containsString:@"processed"]);
+
+
+    NSLog(@" needProcessed %d",needProcessed);
+    //asdf
+    for (int i = 0; i < rpd.categoryCount; i++)
+    {
+        float val,loval,nloval,prval,nprval;
+        val    = total;
+        loval  = [rpd getCatLOSumByMonth:i :monthNumber];
+        nloval = [rpd getCatNLOSumByMonth:i :monthNumber];
+        prval  = [rpd getCatPRSumByMonth:i :monthNumber];
+        nprval = [rpd getCatNPRSumByMonth:i :monthNumber];
+        if (needLocal) val = loval;
+        else if (needNonLocal) val = nloval;
+        if (needProcessed) val = prval;
+        else if (needNonProcessed) val = nprval;
+//        [values addObject:[[PieChartDataEntry alloc] initWithValue:(arc4random_uniform(mult) + mult / 5) label:parties[i % parties.count] icon: [UIImage imageNamed:@"icon"]]];
+        [values addObject:[[PieChartDataEntry alloc] initWithValue:val
+                                                             label:parties[i % parties.count] icon: [UIImage imageNamed:@"icon"]]];
+    }
+    NSString *ptit = [NSString stringWithFormat:@"%@ : %@",pTitle,month];
+
+    PieChartDataSet *dataSet = [[PieChartDataSet alloc] initWithValues:values label:ptit];
     
     dataSet.drawIconsEnabled = NO;
     

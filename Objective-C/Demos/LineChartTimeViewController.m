@@ -80,7 +80,17 @@
     leftAxis.axisMaximum = 170.0;
     leftAxis.yOffset = -9.0;
     leftAxis.labelTextColor = [UIColor colorWithRed:255/255.0 green:192/255.0 blue:56/255.0 alpha:1.0];
-    
+
+    //DHS 2/27 add formatting
+    NSNumberFormatter *leftAxisFormatter = [[NSNumberFormatter alloc] init];
+    leftAxisFormatter.minimumFractionDigits = 0;
+    leftAxisFormatter.maximumFractionDigits = 1;
+    NSString* fstr = @" $";
+    if (byPercent) fstr = @" %";
+    leftAxisFormatter.negativeSuffix = fstr;
+    leftAxisFormatter.positiveSuffix = fstr;
+    leftAxis.valueFormatter = [[ChartDefaultAxisValueFormatter alloc] initWithFormatter:leftAxisFormatter];
+
     _chartView.rightAxis.enabled = NO;
     
     _chartView.legend.form = ChartLegendFormLine;

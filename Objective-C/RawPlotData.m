@@ -42,6 +42,7 @@ static RawPlotData *sharedInstance = nil;
         et = [[EXPTable alloc] init];
         pamHeaders = nil;
         pamKeywords = nil;
+        _categoryCount = 8; //Canned, need better way to set this
     }
     return self;
 }
@@ -116,7 +117,7 @@ static RawPlotData *sharedInstance = nil;
                 }
                 
                 //Update category info too
-                [estats addCatAmount :vindex :(int)catIndex :amount : proFlag];
+                [estats addCatAmount :vindex :(int)catIndex :amount : proFlag: locFlag];
             } //end if rmonth
         }    //end for i
         //[estats dump];
@@ -196,7 +197,7 @@ static RawPlotData *sharedInstance = nil;
                     }
                     
                     //Update category info too
-                    [estats addCatAmount :vindex :(int)catIndex :amount : proFlag];
+                    [estats addCatAmount :vindex :(int)catIndex :amount : proFlag: locFlag];
                     
                 }
                 else
@@ -276,6 +277,42 @@ static RawPlotData *sharedInstance = nil;
     _expstats = monthlyStats[month_0_to_11];
     return [self getDollarsAndCentsCrappily : _expstats.allVendorsPAmount];
 } //end getLocalTotalByMonth
+
+
+//=============(RawPlotData)=====================================================
+-(float) getCatPRSumByMonth : (int) cindex : (int) month_0_to_11
+{
+    if (![self isMonthLegal:month_0_to_11]) return 0.0;
+    _expstats = monthlyStats[month_0_to_11];
+    return [self getDollarsAndCentsCrappily : [_expstats getCategoryPRSum:cindex]];
+} //end getCatPRSumByMonth
+
+
+//=============(RawPlotData)=====================================================
+-(float) getCatNPRSumByMonth : (int) cindex : (int) month_0_to_11
+{
+    if (![self isMonthLegal:month_0_to_11]) return 0.0;
+    _expstats = monthlyStats[month_0_to_11];
+    return [self getDollarsAndCentsCrappily : [_expstats getCategoryNPRSum:cindex]];
+} //end getCatNPRSumByMonth
+
+//=============(RawPlotData)=====================================================
+-(float) getCatLOSumByMonth : (int) cindex : (int) month_0_to_11
+{
+    if (![self isMonthLegal:month_0_to_11]) return 0.0;
+    _expstats = monthlyStats[month_0_to_11];
+    return [self getDollarsAndCentsCrappily : [_expstats getCategoryLOSum:cindex]];
+} //end getCatLOSumByMonth
+
+
+//=============(RawPlotData)=====================================================
+-(float) getCatNLOSumByMonth : (int) cindex : (int) month_0_to_11
+{
+    if (![self isMonthLegal:month_0_to_11]) return 0.0;
+    _expstats = monthlyStats[month_0_to_11];
+    return [self getDollarsAndCentsCrappily : [_expstats getCategoryNLOSum:cindex]];
+} //end getCatNLOSumByMonth
+
 
 
 //=============(RawPlotData)=====================================================

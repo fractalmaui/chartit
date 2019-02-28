@@ -13,6 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BarChartViewController" customModule="Chartit" customModuleProvider="target">
             <connections>
                 <outlet property="chartView" destination="Oqd-Ej-1xl" id="tSA-aU-J9W"/>
+                <outlet property="percentLabel" destination="4t1-By-Tvk" id="XB3-dn-eaq"/>
+                <outlet property="percentSwitch" destination="nWM-So-zzH" id="8Mo-vr-7Ak"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -36,13 +38,33 @@
                     <rect key="frame" x="0.0" y="47" width="375" height="580"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nWM-So-zzH">
+                    <rect key="frame" x="15" y="627" width="51" height="31"/>
+                    <connections>
+                        <action selector="switchChanged:" destination="-1" eventType="valueChanged" id="NsV-Q6-KXr"/>
+                    </connections>
+                </switch>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By Percent" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4t1-By-Tvk">
+                    <rect key="frame" x="80" y="632" width="120" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="LnW-0a-1P2"/>
+                        <constraint firstAttribute="height" constant="21" id="Qa8-3X-cSB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="0.94117647059999998" green="0.94117647059999998" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Oqd-Ej-1xl" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="47" id="3NA-if-rAO"/>
+                <constraint firstItem="nWM-So-zzH" firstAttribute="leading" secondItem="GSz-bC-TWn" secondAttribute="leading" constant="15" id="5N2-Ub-bFl"/>
                 <constraint firstItem="Oqd-Ej-1xl" firstAttribute="leading" secondItem="GSz-bC-TWn" secondAttribute="leading" id="6Mc-iO-BuY"/>
+                <constraint firstItem="GSz-bC-TWn" firstAttribute="bottom" secondItem="4t1-By-Tvk" secondAttribute="bottom" constant="14" id="88w-7S-Csq"/>
                 <constraint firstItem="Zdz-nd-u7k" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="4" id="QYu-uI-rC8"/>
                 <constraint firstItem="GSz-bC-TWn" firstAttribute="bottom" secondItem="Oqd-Ej-1xl" secondAttribute="bottom" constant="40" id="ahe-ry-ExN"/>
+                <constraint firstItem="GSz-bC-TWn" firstAttribute="bottom" secondItem="nWM-So-zzH" secondAttribute="bottom" constant="9" id="cWU-qJ-P5J"/>
+                <constraint firstItem="4t1-By-Tvk" firstAttribute="leading" secondItem="nWM-So-zzH" secondAttribute="trailing" constant="16" id="fsV-33-bfP"/>
                 <constraint firstItem="GSz-bC-TWn" firstAttribute="trailing" secondItem="Zdz-nd-u7k" secondAttribute="trailing" constant="8" id="hkP-f4-aXC"/>
                 <constraint firstItem="GSz-bC-TWn" firstAttribute="trailing" secondItem="Oqd-Ej-1xl" secondAttribute="trailing" id="mC3-xy-2CS"/>
             </constraints>

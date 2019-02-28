@@ -42,6 +42,7 @@
 
 @property (nonatomic,assign) BOOL dataLoaded;
 @property (nonatomic,assign) int rcount;
+@property (nonatomic,assign) int categoryCount;
 @property (nonatomic,strong) EXPStats *expstats;
 
 @property (nonatomic, unsafe_unretained) id <RawPlotDataDelegate> delegate; // receiver of completion messages
@@ -57,6 +58,10 @@
 -(float) getTotalByMonth : (int) month_0_to_11;
 -(float) getLocalTotalByMonth : (int) month_0_to_11;
 -(float) getProcessedTotalByMonth : (int) month_0_to_11;
+-(float) getCatPRSumByMonth : (int) cindex : (int) month_0_to_11;
+-(float) getCatNPRSumByMonth : (int) cindex : (int) month_0_to_11;
+-(float) getCatLOSumByMonth : (int) cindex : (int) month_0_to_11;
+-(float) getCatNLOSumByMonth : (int) cindex : (int) month_0_to_11;
 
 
 @end

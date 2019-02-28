@@ -8,6 +8,7 @@
 //
 //  https://github.com/danielgindi/Charts
 //
+// 2/24 add percent
 
 #import "BarChartViewController.h"
 #import "Chartit-Swift.h"
@@ -16,11 +17,14 @@
 
 @interface BarChartViewController () <ChartViewDelegate>
 
+//DHS note these must match the swift file!!!
 @property (nonatomic, strong) IBOutlet BarChartView *chartView;
 @property (nonatomic, strong) IBOutlet UISlider *sliderX;
 @property (nonatomic, strong) IBOutlet UISlider *sliderY;
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextX;
 @property (nonatomic, strong) IBOutlet UITextField *sliderTextY;
+@property (nonatomic, strong) IBOutlet UISwitch *percentSwitch;
+@property (nonatomic, strong) IBOutlet UILabel *percentLabel;
 
 @end
 
@@ -32,15 +36,16 @@
 
     //DHS CHANGES-------
     self.title = pTitle;
-    needSliders = FALSE;
+    needSliders  = FALSE;
+ //   _chartView.backgroundColor = [UIColor redColor];
 //    if (plotType == 99) //Special type w/ sliders  2/22
 //    {
 //        needSliders = TRUE;
 //    }
-    _sliderX.hidden     = !needSliders;
-    _sliderY.hidden     = !needSliders;
-    _sliderTextX.hidden = !needSliders;
-    _sliderTextY.hidden = !needSliders;
+    _sliderX.hidden       = !needSliders;
+    _sliderY.hidden       = !needSliders;
+    _sliderTextX.hidden   = !needSliders;
+    _sliderTextY.hidden   = !needSliders;
     //END DHS CHANGES------
     self.options = @[
                      @{@"key": @"toggleValues", @"label": @"Toggle Values"},
@@ -74,16 +79,10 @@
 //    xAxis.valueFormatter = [[DayAxisValueFormatter alloc] initForChart:_chartView];
     xAxis.valueFormatter = [[FiscalAxisValueFormatter alloc] initForChart:_chartView];
 
-    NSNumberFormatter *leftAxisFormatter = [[NSNumberFormatter alloc] init];
-    leftAxisFormatter.minimumFractionDigits = 0;
-    leftAxisFormatter.maximumFractionDigits = 1;
-    leftAxisFormatter.negativeSuffix = @" $";
-    leftAxisFormatter.positiveSuffix = @" $";
-    
+
     ChartYAxis *leftAxis = _chartView.leftAxis;
     leftAxis.labelFont = [UIFont systemFontOfSize:10.f];
     leftAxis.labelCount = 8;
-    leftAxis.valueFormatter = [[ChartDefaultAxisValueFormatter alloc] initWithFormatter:leftAxisFormatter];
     leftAxis.labelPosition = YAxisLabelPositionOutsideChart;
     leftAxis.spaceTop = 0.15;
     leftAxis.axisMinimum = 0.0; // this replaces startAtZero = YES
@@ -137,16 +136,32 @@
         _chartView.data = nil;
         return;
     }
-    
-//DHS     [self setDataCount:_sliderX.value + 1 range:_sliderY.value];
+    byPercent = _percentSwitch.isOn;
+    //DHS     [self setDataCount:_sliderX.value + 1 range:_sliderY.value];
     int monthCount = [rpd getStatsMonthCount];
     int dataRange  = [rpd getStatsMaxForData : @"all"];  //2/22 need change?
+    //Get handle to left axis...
+    ChartYAxis *leftAxis = _chartView.leftAxis;
+    //2/27 format varies by plot type
+    NSString* fstr = @" $";
+    if (byPercent)
+    {
+        fstr = @" %";
+        leftAxis.axisMaximum = 100.0;
+    }
+    NSNumberFormatter *leftAxisFormatter = [[NSNumberFormatter alloc] init];
+    leftAxisFormatter.minimumFractionDigits = 0;
+    leftAxisFormatter.maximumFractionDigits = 1;
+    leftAxisFormatter.negativeSuffix = fstr;
+    leftAxisFormatter.positiveSuffix = fstr;
+    leftAxis.valueFormatter = [[ChartDefaultAxisValueFormatter alloc] initWithFormatter:leftAxisFormatter];
 
-    [self loadPlotData : monthCount range : dataRange];
+    //DHS range is either auto-set or 100 by percent
+    [self loadPlotData : monthCount ];
 }
 
 //=====BarChartVC==================================================
-- (void)loadPlotData:(int)count range:(double)range
+- (void)loadPlotData:(int)count
 {
     double start = 1.0;
     
@@ -157,23 +172,34 @@
     BOOL needTotals  = [plotType.lowercaseString containsString:@"total"];
     BOOL needLTotals = [plotType.lowercaseString containsString:@"local"];
     BOOL needPTotals = [plotType.lowercaseString containsString:@"processed"];
+    
+    //2/27
+    _percentSwitch.hidden = !(needLTotals || needPTotals);
+    _percentLabel.hidden  = !(needLTotals || needPTotals);
+
     for (int i = start; i < start + count + 1; i++)
     {
-        double val;
+        double valTo,valLo,valPr;
+        valTo = valLo = valPr = 0.0;
         if (needTotals)
         {
-            val = [rpd getTotalByMonth:i-1];
-            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+            valTo = [rpd getTotalByMonth:i-1];
+            if (byPercent)
+                [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:100.0]];
+            else
+                [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:valTo]];
         }
         if (needLTotals)
         {
-            val = [rpd getLocalTotalByMonth:i-1];
-            [ltotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+            valLo = [rpd getLocalTotalByMonth:i-1];
+            if (byPercent) valLo = 100.0 * (valLo/valTo);
+            [ltotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:valLo]];
         }
         if (needPTotals)
         {
-            val = [rpd getProcessedTotalByMonth:i-1];
-            [ptotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val]];
+            valPr = [rpd getProcessedTotalByMonth:i-1];
+            if (byPercent) valPr = 100.0 * (valPr/valTo);
+            [ptotalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:valPr]];
         }
         //HUH?            [totalVals addObject:[[BarChartDataEntry alloc] initWithX:i y:val icon: [UIImage imageNamed:@"icon"]]];
     } //end int i
@@ -190,6 +216,7 @@
         set1 = [[BarChartDataSet alloc] initWithValues:totalVals label:@"Totals"];
         [set1 setColors: blueColz];
         set1.drawIconsEnabled = NO;
+        if (byPercent) set1.drawValuesEnabled = NO;
     }
     if (needLTotals)
     {
@@ -234,6 +261,13 @@
     
     [self updateChartData];
 }
+
+- (IBAction)switchChanged:(id)sender
+{
+    [self updateChartData];
+}
+
+
 
 #pragma mark - ChartViewDelegate
 

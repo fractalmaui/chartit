@@ -17,6 +17,8 @@ class LineChart1ViewController: DemoBaseViewController {
     @IBOutlet var sliderTextX: UITextField!
     @IBOutlet var sliderTextY: UITextField!
 
+    @IBOutlet weak var percentLabel: UILabel!
+    @IBOutlet weak var percentSwitch: UISwitch!
     override func viewDidLoad() {
         super.viewDidLoad()
 
