@@ -14,14 +14,14 @@
 
 #import <Foundation/Foundation.h>
 #import "smartProducts.h"
-#import "Vendors.h"
+//#import "Vendors.h"
 
 #define MAX_CVENDORS 64   //Expand as needed
 #define MAX_CCATEGORIES 16 //Expand as needed
 
 @interface EXPStats : NSObject
 {
-    Vendors *vv;
+    //Vendors *vv;
     smartProducts *smartp;
 
     //Statistics...
@@ -41,7 +41,7 @@
     NSArray *categories;
     NSArray *foodCategories;
     NSArray *monthNames;
-
+    NSArray *vnames;
     int loadCount,writeCount,okCount,errCount;
     int catPRAmounts[MAX_CVENDORS][MAX_CCATEGORIES];
     int catPRCounts[MAX_CVENDORS][MAX_CCATEGORIES];

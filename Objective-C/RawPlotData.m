@@ -36,13 +36,26 @@ static RawPlotData *sharedInstance = nil;
         plotObjects  = [[NSMutableArray alloc] init];
         monthlyStats = [[NSMutableArray alloc] init];
         _dataLoaded = FALSE;
-        vv = [Vendors sharedInstance];
+        //vv = [Vendors sharedInstance];
         //[self readFullComparisonTable:0];
         columnKeys  = [[NSMutableArray alloc] init];
         et = [[EXPTable alloc] init];
         pamHeaders = nil;
         pamKeywords = nil;
         _categoryCount = 8; //Canned, need better way to set this
+        
+        vnames = @[
+                   @"Adaptations",
+                   @"Cal Kona",
+                   @"Coca Cola",
+                   @"Gordon",
+                   @"Greco",
+                   @"HFM",
+                   @"Hawaii Beef Producers",
+                   @"Loves Bakery",
+                   @"Meadow Gold"
+                   ];
+
     }
     return self;
 }
@@ -92,7 +105,7 @@ static RawPlotData *sharedInstance = nil;
                 {
                     NSLog(@" cat [%@] not found!",category);
                 }
-                int  vindex     = [vv getVendorIndex:vendor]; //this is dimensioned by all possible vendors!
+                int  vindex     = [self getVendorIndex:vendor]; //this is dimensioned by all possible vendors!
                 //                if ([category.lowercaseString containsString:@"protein"])
                 //                {
                 //                    NSLog(@" protein %d",i);
@@ -168,7 +181,7 @@ static RawPlotData *sharedInstance = nil;
                 {
                     NSLog(@" cat [%@] not found!",category);
                 }
-                int  vindex     = [vv getVendorIndex:vendor]; //this is dimensioned by all possible vendors!
+                int  vindex     = [self getVendorIndex:vendor]; //this is dimensioned by all possible vendors!
                 //                if ([category.lowercaseString containsString:@"protein"])
                 //                {
                 //                    NSLog(@" protein %d",i);
@@ -223,6 +236,21 @@ static RawPlotData *sharedInstance = nil;
 
 } //end getStatsFromParse
 
+//=============(RawPlotData)=====================================================
+// from vendors object
+-(int)  getVendorIndex : (NSString *)vname
+    {
+        NSString *vlc = vname.lowercaseString;
+        int i=0;
+        for (NSString *vn in vnames)
+        {
+            if ([vlc containsString:vn.lowercaseString]) return i;//Match?
+            i++;
+        }
+        return -1;
+    }
+
+    
 //=============(RawPlotData)=====================================================
 -(int)  getStatsMonthCount
 {

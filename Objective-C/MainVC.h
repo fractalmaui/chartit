@@ -45,7 +45,6 @@
     NSArray *tableOptions;
 }
 
--(void) startLoadingData;
 @property (weak, nonatomic) IBOutlet UIButton *lineButton;
 @property (weak, nonatomic) IBOutlet UIButton *barButton;
 @property (weak, nonatomic) IBOutlet UIButton *donutButton;

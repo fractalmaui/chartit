@@ -244,15 +244,15 @@ class DemoBaseViewController: UIViewController, ChartViewDelegate {
         let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
         paragraphStyle.lineBreakMode = .byTruncatingTail
         paragraphStyle.alignment = .center
-        
-        let centerText = NSMutableAttributedString(string: "Charts\nby Daniel Cohen Gindi")
-        centerText.setAttributes([.font : UIFont(name: "HelveticaNeue-Light", size: 13)!,
-                                  .paragraphStyle : paragraphStyle], range: NSRange(location: 0, length: centerText.length))
-        centerText.addAttributes([.font : UIFont(name: "HelveticaNeue-Light", size: 11)!,
-                                  .foregroundColor : UIColor.gray], range: NSRange(location: 10, length: centerText.length - 10))
-        centerText.addAttributes([.font : UIFont(name: "HelveticaNeue-Light", size: 11)!,
-                                  .foregroundColor : UIColor(red: 51/255, green: 181/255, blue: 229/255, alpha: 1)], range: NSRange(location: centerText.length - 19, length: 19))
-        chartView.centerAttributedText = centerText;
+//DHS 3/1 clobber this
+//        let centerText = NSMutableAttributedString(string: "Charts\nby Daniel Cohen Gindi")
+//        centerText.setAttributes([.font : UIFont(name: "HelveticaNeue-Light", size: 13)!,
+//                                  .paragraphStyle : paragraphStyle], range: NSRange(location: 0, length: centerText.length))
+//        centerText.addAttributes([.font : UIFont(name: "HelveticaNeue-Light", size: 11)!,
+//                                  .foregroundColor : UIColor.gray], range: NSRange(location: 10, length: centerText.length - 10))
+//        centerText.addAttributes([.font : UIFont(name: "HelveticaNeue-Light", size: 11)!,
+//                                  .foregroundColor : UIColor(red: 51/255, green: 181/255, blue: 229/255, alpha: 1)], range: NSRange(location: centerText.length - 19, length: 19))
+//        chartView.centerAttributedText = centerText;
         
         chartView.drawHoleEnabled = true
         chartView.rotationAngle = 0

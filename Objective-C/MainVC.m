@@ -7,7 +7,7 @@
 //
 //   ray wenderlich tutorial on swift charts:
 //    https://medium.com/@skoli/using-realm-and-charts-with-swift-3-in-ios-10-40c42e3838c0
-
+//  2/28 add switch back to BGPCloud app, (using RH navbar button for now)
 #import "MainVC.h"
 
 @interface MainVC ()
@@ -16,7 +16,8 @@
 
 @implementation MainVC
 
-
+#define CELLHITE 40
+    
 //=============MainVC=====================================================
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
@@ -84,13 +85,15 @@
     plotOptionsTable.backgroundColor = [UIColor colorWithWhite:1.f alpha:0.4f];
     xs = 320;
     xi = viewW2 - xs/2;
-    yi = 100;
-    ys = viewHit - yi - 80;
+//    yi = 100;
+    ys = 300; // DHS 3/1  viewHit - yi - 80;
+    yi = viewH2 - ys/2;
     plotOptionsTable.frame = CGRectMake(xi,yi,xs,ys);
     plotOptionsTable.delegate = self;
     plotOptionsTable.dataSource = self;
     [plotOptionsTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     [self.view addSubview:plotOptionsTable];
+    plotOptionsTable.backgroundColor = [UIColor colorWithRed:.7 green:.7 blue:.7 alpha:.3];
     plotOptionsTable.hidden = TRUE;
 
     monthSelect = @"01-JUL";
@@ -98,8 +101,8 @@
 
     [self initOptions];
     tableOptions = lineOptions;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startLoadingData:)
-                                                 name:@"vendorsLoaded" object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startLoadingData:)
+//                                                 name:@"vendorsLoaded" object:nil];
     
     [self resetOverlay];
 
@@ -109,43 +112,66 @@
 -(void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self startLoadingData];  //use canned vendors, load data immediately
 }
+
 
 //=============MainVC=====================================================
 - (IBAction)lineSelect:(id)sender
 {
-    NSLog(@" line plots...");
-    funcSelect   = @"line";
-    tableOptions = lineOptions; //Assign table choices
-    [self animateOverlay:sender];
+    if (!dataLoaded) [self errorMessage:@"Waiting to load Vendors..." :@"Please wait a few moments"];
+    else {
+        NSLog(@" line plots...");
+        funcSelect   = @"line";
+        tableOptions = lineOptions; //Assign table choices
+        [self animateOverlay:sender];
+    }
 }
 
 //=============MainVC=====================================================
 - (IBAction)barSelect:(id)sender
 {
-    NSLog(@" bar plots...");
-    funcSelect = @"bar";
-    tableOptions = barOptions; //Assign table choices
-    [self animateOverlay:sender];
+    if (!dataLoaded) [self errorMessage:@"Waiting to load Vendors..." :@"Please wait a few moments"];
+    else{
+        NSLog(@" bar plots...");
+        funcSelect = @"bar";
+        tableOptions = barOptions; //Assign table choices
+        [self animateOverlay:sender];
+    }
 }
 
 //=============MainVC=====================================================
 - (IBAction)donutSelect:(id)sender
 {
-    NSLog(@" donut plots...");
-    funcSelect = @"pie";
-    tableOptions = pieOptions; //Assign table choices
-    [self animateOverlay:sender];
+    if (!dataLoaded) [self errorMessage:@"Waiting to load Vendors..." :@"Please wait a few moments"];
+    else{
+        NSLog(@" donut plots...");
+        funcSelect = @"pie";
+        tableOptions = pieOptions; //Assign table choices
+        [self animateOverlay:sender];
+    }
 }
 
 //=============MainVC=====================================================
 - (IBAction)scatterSelect:(id)sender
 {
-    NSLog(@" scatter plots...");
-    funcSelect = @"scatter";
-    tableOptions = scatterOptions; //Assign table choices
-    [self animateOverlay:sender];
+//    NSLog(@" scatter plots...");
+//    funcSelect = @"scatter";
+//    tableOptions = scatterOptions; //Assign table choices
+//    [self animateOverlay:sender];
 }
+
+//=============MainVC=====================================================
+//  Called when "vendors Loaded" notification comes in...
+- (void)startLoadingData
+    {
+        NSLog(@" loading data...");
+        [rpd loadDataFromBuiltinCSV: @"fy2018"];
+        //Compute stats from EXP data...
+        [rpd getStatsFromEXP];
+        dataLoaded = TRUE;
+    } //end startLoadingData
+    
 
 //=============MainVC=====================================================
 // Items to appear in the selection table based on plot type
@@ -170,11 +196,12 @@
 }
 
 //=============MainVC=====================================================
+// Keeps table centered no matter how many options there are
 -(void) resetTableFrame
 {
     int xi,yi,xs,ys;
     xs = 300;
-    ys = 60 * (int)tableOptions.count;
+    ys = CELLHITE * (int)tableOptions.count;
     xi = viewW2 - xs/2;
     yi = viewH2 - ys/2;
     plotOptionsTable.frame = CGRectMake(xi,yi,xs,ys);
@@ -251,6 +278,19 @@
     
 }
 
+//=============MainVC=====================================================
+-(void) errorMessage : (NSString *) title :(NSString *) msg
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:
+                                NSLocalizedString(title,nil)  message:msg
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK",nil)
+                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                              }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+} //end errorMessage
+
 
 //=============MainVC=====================================================
 // 2/27 choose fiscal month for pie chart
@@ -310,16 +350,6 @@
     
     
 } //end menu
-
-//=============MainVC=====================================================
-//  Called when "vendors Loaded" notification comes in...
-- (void)startLoadingData:(NSNotification *)notification
-{
-    NSLog(@" loading data...");
-    [rpd loadDataFromBuiltinCSV: @"fy2018"];
-    //Compute stats from EXP data...
-    [rpd getStatsFromEXP];
-} //end startLoadingData
 
 
 
@@ -388,7 +418,7 @@
 //=============MainVC=====================================================
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40;
+    return CELLHITE;
 }
 
 //=============MainVC=====================================================
@@ -445,6 +475,12 @@
     else if (which == 2) //Templates / settings?
     {
         [self resetOverlay];
+    }
+    else if (which == 3) //Switch back to BGP Cloud
+    {
+        NSString *chartitAppURL = @"BGPCloud://";
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:chartitAppURL]];
+
     }
     
 } //end didSelectNavButton

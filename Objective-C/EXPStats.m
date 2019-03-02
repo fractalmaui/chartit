@@ -21,7 +21,7 @@
 {
     if (self = [super init])
     {
-        vv  = [Vendors sharedInstance];
+        //vv  = [Vendors sharedInstance];
         //NSLog(@" estats init vendors %@",vv);
         //_versionNumber    = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey];
         [self loadConstants];
@@ -119,6 +119,17 @@
                    @"11-MAY",
                    @"12-JUN"
                   ];
+    vnames = @[
+               @"Adaptations",
+               @"Cal Kona",
+               @"Coca Cola",
+               @"Gordon",
+               @"Greco",
+               @"HFM",
+               @"Hawaii Beef Producers",
+               @"Loves Bakery",
+               @"Meadow Gold"
+              ];
 
 } //end loadConstants
 
@@ -292,7 +303,7 @@
     {
         if (amounts[i] > 0) //Got somethign for this vendor?
         {
-            NSLog(@"Vendor: %@",vv.vNames[i]);
+            NSLog(@"Vendor: %@",vnames[i]);
             float ftotal = (float)amounts[i] / 100.0;
             tstr = [smartp getDollarsAndCentsString:ftotal];
             NSLog(@" Total $%@",tstr);

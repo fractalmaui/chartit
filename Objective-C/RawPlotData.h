@@ -19,7 +19,7 @@
 #import "EXPObject.h"
 #import "EXPStats.h"
 #import "EXPTable.h"
-#import "Vendors.h"
+//#import "Vendors.h"
 
 @protocol RawPlotDataDelegate;
 
@@ -29,7 +29,7 @@
 {
     NSMutableArray *plotObjects;
     NSMutableArray *monthlyStats;
-    Vendors *vv;
+    //Vendors *vv;
     int allVendorsMax;
     int allVendorsLMax;
     int allVendorsPMax;
@@ -38,6 +38,8 @@
     NSMutableArray *columnKeys; 
     NSArray *pamHeaders;
     NSArray *pamKeywords;
+    NSArray *vnames;
+
 }
 
 @property (nonatomic,assign) BOOL dataLoaded;
