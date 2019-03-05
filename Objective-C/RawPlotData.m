@@ -11,6 +11,7 @@
 //  Created by Dave Scruton on 2/18/19.
 //  Copyright © 2019 Beyond Green Partners. All rights reserved.
 //
+//  3/5 add dumpallstats and getDumpStringOfAllStats
 
 #import "RawPlotData.h"
 
@@ -55,11 +56,11 @@ static RawPlotData *sharedInstance = nil;
                    @"Loves Bakery",
                    @"Meadow Gold"
                    ];
-
     }
     return self;
 }
-//=============Comparison VC=====================================================
+
+//=============(RawPlotData)=====================================================
 -(void) loadDataFromBuiltinCSV : (NSString *)fname
 {
     [self loadConstants];
@@ -77,7 +78,25 @@ static RawPlotData *sharedInstance = nil;
     
 } //end loadDataFromCSV
 
-//=============Comparison VC=====================================================
+//=============(RawPlotData)=====================================================
+-(void) dumpAllStats
+{
+    for (EXPStats *es in monthlyStats) [es dump];
+}
+
+//=============(RawPlotData)=====================================================
+-(NSString *) getDumpStringOfAllStats
+{
+    NSString *dumpit = @"Dump Full Fiscal Year\n\n";
+    for (EXPStats *es in monthlyStats)
+    {
+        dumpit = [dumpit stringByAppendingString:@"==============================\n"];
+        dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"%@\n",[es getDumpString]]];
+    }
+    return dumpit;
+}
+
+//=============(RawPlotData)=====================================================
 -(void) getStatsFromEXP
 {
     int rcount = (int)et.expos.count;  //expos record count
@@ -171,7 +190,7 @@ static RawPlotData *sharedInstance = nil;
             NSString *rmonth = pfo[PInv_Month_key];
             if ([rmonth isEqualToString:monthStr]) //Match?
             {
-                NSLog(@"--->rmonth %@ vs ms %@",rmonth,monthStr);
+                //NSLog(@"--->rmonth %@ vs ms %@",rmonth,monthStr);
                 NSString *vendor   = pfo[PInv_Vendor_key];
                 NSString *category = pfo[PInv_Category_key];
                 category = [category stringByReplacingOccurrencesOfString:@" " withString:@""]; //Trim!
@@ -219,7 +238,7 @@ static RawPlotData *sharedInstance = nil;
                 }
            } //end if rmonth
         }    //end for i
-        [estats dump];
+        //[estats dump];
         //DHS 2/19 ignore empty months... (data had better be sequential!)
         if (estats.allVendorsAmount > 0)
         {
@@ -363,7 +382,7 @@ static RawPlotData *sharedInstance = nil;
     
 } //end loadConstants
 
-//=============Comparison VC=====================================================
+//=============(RawPlotData)=====================================================
 //Can't break up a CSV string right if it has commas inside quoted names (like vendor!)
 -(NSString *) stripCommasFromQuotedStrings : (NSString*) s
 {
@@ -388,7 +407,7 @@ static RawPlotData *sharedInstance = nil;
 } //end stripCommasFromQuotedStrings
 
 
-//=============Comparison VC=====================================================
+//=============(RawPlotData)=====================================================
 // Loads string CSV contents, creates EXPTable array of EXPObjects
 -(void) processCSVToEXP : (NSString *)s
 {
@@ -468,7 +487,7 @@ static RawPlotData *sharedInstance = nil;
 #define LIMIT_SIZE 100
 //=============(RawPlotData)=====================================================
 // Loads in data LIMIT_SIZE recs at a time, uses "skip" for re=entrant call asdf
--(void) readFullComparisonTable : (int) skip
+-(void) readFullEXPTable : (NSString *) tableName : (int) skip
 {
     if (skip == 0) //Start? Clear CSVList and add header
     {
@@ -476,33 +495,31 @@ static RawPlotData *sharedInstance = nil;
         _dataLoaded = FALSE;
     }
     //NOTE: the plot table is has a subset of the full EXP tables columns!
-    PFQuery *query = [PFQuery queryWithClassName:@"EXP_Comparison"]; //This may change!
+    PFQuery *query = [PFQuery queryWithClassName:tableName]; //This may change!
     NSLog(@" read %d to %d",skip,skip+LIMIT_SIZE);
     query.skip = skip;
     query.limit = LIMIT_SIZE;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
+        if (!error) { 
             for( PFObject *pfo in objects)
             {
                 [self->plotObjects addObject:pfo];
             }
+            NSLog(@" ...got %d records from parse ",(int)objects.count);
             if (objects.count == LIMIT_SIZE) //Maybe more?
             {
-                [self readFullComparisonTable : skip+LIMIT_SIZE  ];
+                [self readFullEXPTable : tableName : skip+LIMIT_SIZE  ];
             }
             else
             {
                 self->_dataLoaded = TRUE;
-                [self.delegate didReadFullComparisonTable];
+                [self.delegate didReadFullEXPTable];
                 self->_rcount = (int)self->plotObjects.count;
             }
         }
         else
-            [self.delegate errorReadingFullComparisonTable : error.localizedDescription];
-
+            [self.delegate errorReadingFullEXPTable : error.localizedDescription];
     }];
-    
-    
-}
+} //end readFullEXPTable
 
 @end

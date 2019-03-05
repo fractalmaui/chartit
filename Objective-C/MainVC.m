@@ -1,4 +1,10 @@
 //
+//   __  __       _    __     ______
+//  |  \/  | __ _(_)_ _\ \   / / ___|
+//  | |\/| |/ _` | | '_ \ \ / / |
+//  | |  | | (_| | | | | \ V /| |___
+//  |_|  |_|\__,_|_|_| |_|\_/  \____|
+//
 //  MainVC.m
 //  ChartsDemo-iOS
 //
@@ -21,7 +27,7 @@
 //=============MainVC=====================================================
 - (id)initWithCoder:(NSCoder *)aDecoder {
     if ((self = [super initWithCoder:aDecoder])) {
-
+        
     }
     return self;
 }
@@ -39,6 +45,7 @@
 }
 
 //=============MainVC=====================================================
+// Since this comes from an XIB, we're handling inits in here...
 - (void)viewDidLoad {
     [super viewDidLoad];
     CGSize csz   = [UIScreen mainScreen].bounds.size;
@@ -74,9 +81,10 @@
     //NOTE: this is a singleton, so there should be ONLY ONE Delegate!!!
     //  what if a child window needs to load data???
     //  may want to switch to NSNotification?
-    dataLoaded  = FALSE;
+  //  dataLoaded  = FALSE;
     statsLoaded = FALSE;
-    
+    dataSource  = @"builtin";
+    [self startLoadingData];
     //ONLY need for parse load... [spv start : @"Read Plot Data..."];
     rpd = RawPlotData.sharedInstance;
     rpd.delegate = self;
@@ -102,7 +110,7 @@
     [self initOptions];
     tableOptions = lineOptions;
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startLoadingData:)
-//                                                 name:@"vendorsLoaded" object:nil];
+//                                                name:@"vendorsLoaded" object:nil];
     
     [self resetOverlay];
 
@@ -119,58 +127,65 @@
 //=============MainVC=====================================================
 - (IBAction)lineSelect:(id)sender
 {
-    if (!dataLoaded) [self errorMessage:@"Waiting to load Vendors..." :@"Please wait a few moments"];
+    if (!dataLoaded) [self errorMessage:@"Waiting to load Data..." :@"Please wait a few moments"];
     else {
-        NSLog(@" line plots...");
+        //NSLog(@" line plots...");
         funcSelect   = @"line";
         tableOptions = lineOptions; //Assign table choices
         [self animateOverlay:sender];
     }
-}
+} //end lineSelect
 
 //=============MainVC=====================================================
 - (IBAction)barSelect:(id)sender
 {
-    if (!dataLoaded) [self errorMessage:@"Waiting to load Vendors..." :@"Please wait a few moments"];
+    if (!dataLoaded) [self errorMessage:@"Waiting to load Data..." :@"Please wait a few moments"];
     else{
-        NSLog(@" bar plots...");
+        //NSLog(@" bar plots...");
         funcSelect = @"bar";
         tableOptions = barOptions; //Assign table choices
         [self animateOverlay:sender];
     }
-}
+} // end barSelect
 
 //=============MainVC=====================================================
 - (IBAction)donutSelect:(id)sender
 {
-    if (!dataLoaded) [self errorMessage:@"Waiting to load Vendors..." :@"Please wait a few moments"];
+    if (!dataLoaded) [self errorMessage:@"Waiting to load Data..." :@"Please wait a few moments"];
     else{
-        NSLog(@" donut plots...");
+        //NSLog(@" donut plots...");
         funcSelect = @"pie";
         tableOptions = pieOptions; //Assign table choices
         [self animateOverlay:sender];
     }
-}
+} //end donutSelect
 
 //=============MainVC=====================================================
 - (IBAction)scatterSelect:(id)sender
 {
-//    NSLog(@" scatter plots...");
-//    funcSelect = @"scatter";
-//    tableOptions = scatterOptions; //Assign table choices
-//    [self animateOverlay:sender];
+    [self errorMessage : @"Not Implemented" : @"There are no Scatter Plots set up Yet"];
 }
 
 //=============MainVC=====================================================
 //  Called when "vendors Loaded" notification comes in...
 - (void)startLoadingData
+{
+    [spv start : @"Load Plot Data..."];
+    NSLog(@" loading data...");
+    if ([dataSource isEqualToString:@"builtin"])
     {
-        NSLog(@" loading data...");
         [rpd loadDataFromBuiltinCSV: @"fy2018"];
         //Compute stats from EXP data...
         [rpd getStatsFromEXP];
         dataLoaded = TRUE;
-    } //end startLoadingData
+        [spv stop];
+
+    }
+    else if ([dataSource isEqualToString:@"exp"])
+    {
+        [rpd readFullEXPTable : @"EXP_Comparison" : 0 ];
+    }
+} //end startLoadingData
     
 
 //=============MainVC=====================================================
@@ -245,28 +260,28 @@
     //]
     //    nav.backgroundColor = [UIColor colorWithRed:0.9 green:0.8 blue:0.7 alpha:1];
     // Menu Button...
-    [nav setHotNot         : NAV_HOME_BUTTON : [UIImage imageNamed:@"HamburgerHOT"]  :
-     [UIImage imageNamed:@"HamburgerNOT"] ];
-    [nav setLabelText      : NAV_HOME_BUTTON : NSLocalizedString(@"MENU",nil)];
+    [nav setHotNot         : NAV_HOME_BUTTON : [UIImage imageNamed:@"empty64"]  :
+     [UIImage imageNamed:@"empty64"] ];
+    [nav setLabelText      : NAV_HOME_BUTTON : NSLocalizedString(@"",nil)];
     [nav setLabelTextColor : NAV_HOME_BUTTON : [UIColor blackColor]];
     [nav setHidden         : NAV_HOME_BUTTON : FALSE];
     // DB access button...
-    [nav setHotNot         : NAV_DB_BUTTON : [UIImage imageNamed:@"dbNOT"]  :
-     [UIImage imageNamed:@"dbHOT"] ];
+    [nav setHotNot         : NAV_DB_BUTTON : [UIImage imageNamed:@"fileNOT"]  :
+     [UIImage imageNamed:@"fileHOT"] ];
     //[nav setCropped        : NAV_DB_BUTTON : 0.01 * PORTRAIT_PERCENT];
-    [nav setLabelText      : NAV_DB_BUTTON : NSLocalizedString(@"DB",nil)];
+    [nav setLabelText      : NAV_DB_BUTTON : NSLocalizedString(@"FILES",nil)];
     [nav setLabelTextColor : NAV_DB_BUTTON : [UIColor blackColor]];
     [nav setHidden         : NAV_DB_BUTTON : FALSE];
     // other button...
-    [nav setHotNot         : NAV_SETTINGS_BUTTON : [UIImage imageNamed:@"grafHOT"]  :
-     [UIImage imageNamed:@"grafNOT"] ];
-    [nav setLabelText      : NAV_SETTINGS_BUTTON : NSLocalizedString(@"Outputs",nil)];
+    [nav setHotNot         : NAV_SETTINGS_BUTTON : [UIImage imageNamed:@"cloudNOT"]  :
+     [UIImage imageNamed:@"cloudHOT"] ];
+    [nav setLabelText      : NAV_SETTINGS_BUTTON : NSLocalizedString(@"CLOUD",nil)];
     [nav setLabelTextColor : NAV_SETTINGS_BUTTON : [UIColor blackColor]];
     [nav setHidden         : NAV_SETTINGS_BUTTON : FALSE]; //10/16 show create even logged out...
     
-    [nav setHotNot         : NAV_BATCH_BUTTON : [UIImage imageNamed:@"multiNOT"]  :
-     [UIImage imageNamed:@"multiHOT"] ];
-    [nav setLabelText      : NAV_BATCH_BUTTON : NSLocalizedString(@"Batch",nil)];
+    [nav setHotNot         : NAV_BATCH_BUTTON : [UIImage imageNamed:@"empty64"]  :
+     [UIImage imageNamed:@"empty64"] ];
+    [nav setLabelText      : NAV_BATCH_BUTTON : NSLocalizedString(@"",nil)];
     [nav setLabelTextColor : NAV_BATCH_BUTTON : [UIColor blackColor]];
     [nav setHidden         : NAV_BATCH_BUTTON : FALSE]; //10/16 show create even logged out...
     //Set color behind NAV buttpns...
@@ -351,6 +366,32 @@
     
 } //end menu
 
+//=============MainVC=====================================================
+-(void) loadMenu
+{
+    NSMutableAttributedString *tatString = [[NSMutableAttributedString alloc]initWithString:@"Load From:"];
+    [tatString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:30] range:NSMakeRange(0, tatString.length)];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:
+                                NSLocalizedString(@"Load From:",nil)
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alert setValue:tatString forKey:@"attributedTitle"];
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Builtin Fiscal Year",nil)
+                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                  self->dataSource = @"builtin";
+                                                  [self startLoadingData];
+                                              }]];
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"EXP Table",nil)
+                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                  self->dataSource = @"exp";
+                                                  [self startLoadingData];
+                                              }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+} //end loadMmenu
+
 
 
 //=============MainVC=====================================================
@@ -427,7 +468,6 @@
 {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     ptypeSelect = cell.textLabel.text;
-    NSLog(@" ptypeselect %@",ptypeSelect);
     if ([ptypeSelect.lowercaseString isEqualToString:@"back"])
     {
         [self resetOverlay];
@@ -456,30 +496,26 @@
     NSLog(@"   didselectNavButton %d",which);
     // [_sfx makeTicSoundWithPitch : 8 : 50 + which];
     
-    if (which == 0) //THis is now a multi-function popup...
+    if (which == 0) //Stubbed for now...
     {
-        [self menu];
+        if (statsLoaded)
+        {
+            [rpd dumpAllStats];
+            dvc = [[dumpVC alloc] init];
+            [self presentViewController:dvc animated:YES completion:nil];
+        }
     }
-    else if (which == 1) //THis is now a multi-function popup...
+    else if (which == 1) //Choose input source
     {
-        
-        //Load canned data to an internal EXP table
-        [rpd loadDataFromBuiltinCSV: @"fy2018"];
-        //Compute stats from EXP data...
-        [rpd getStatsFromEXP];
-        
-        //[rpd getStats];
-        
-        //        [self dbmenu];
+        [self loadMenu];
     }
-    else if (which == 2) //Templates / settings?
-    {
-        [self resetOverlay];
-    }
-    else if (which == 3) //Switch back to BGP Cloud
+    else if (which == 2) //Switch back to BGP Cloud
     {
         NSString *chartitAppURL = @"BGPCloud://";
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:chartitAppURL]];
+    }
+    else if (which == 3) //Stubbed for now...
+    {
 
     }
     
@@ -489,7 +525,7 @@
 #pragma mark - RawPlotDataDelegate
 
 //=======<RawPlotDataDelegate>=======================================
--(void) didReadFullComparisonTable
+-(void) didReadFullEXPTable
 {
     NSLog(@" read data OK");
     dataLoaded = TRUE;
@@ -498,6 +534,13 @@
         [self->rpd getStatsFromParse];
     });
 }
+
+//=======<RawPlotDataDelegate>=======================================
+-(void) errorReadingFullEXPTable : (NSString *)errmsg
+{
+    NSLog(@" error reading EXP %@",errmsg);
+}
+
 
 //=======<RawPlotDataDelegate>=======================================
 -(void) didGetStats
@@ -515,7 +558,6 @@
     });
     
 }
-
 
 
 

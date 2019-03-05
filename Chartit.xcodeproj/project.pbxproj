@@ -133,6 +133,7 @@
 		5BEAED401ABC1AC60013F194 /* SinusBarChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BEAED3E1ABC1AC60013F194 /* SinusBarChartViewController.m */; };
 		5BEAED411ABC1AC60013F194 /* SinusBarChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */; };
 		72205090221C64350086F0A4 /* FiscalAxisValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7220508F221C64350086F0A4 /* FiscalAxisValueFormatter.m */; };
+		72278B94222AF5C900C2FCB2 /* OCRSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 72278B93222AF5C900C2FCB2 /* OCRSettings.m */; };
 		722D391A221A72D800C073B5 /* NavButtons.m in Sources */ = {isa = PBXBuildFile; fileRef = 722D3918221A72D800C073B5 /* NavButtons.m */; };
 		722D3924221A75AE00C073B5 /* dbNOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D391C221A75AE00C073B5 /* dbNOT.png */; };
 		722D3925221A75AE00C073B5 /* dbHOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D391D221A75AE00C073B5 /* dbHOT.png */; };
@@ -162,6 +163,12 @@
 		722D3963221B185000C073B5 /* OCRCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 722D3962221B185000C073B5 /* OCRCategories.m */; };
 		722D3966221B187200C073B5 /* CatObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 722D3965221B187200C073B5 /* CatObject.m */; };
 		722D3969221B190500C073B5 /* Vendors.m in Sources */ = {isa = PBXBuildFile; fileRef = 722D3968221B190500C073B5 /* Vendors.m */; };
+		726C2DEC222EC4AB0069FE7B /* fileNOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 726C2DEA222EC4AB0069FE7B /* fileNOT.png */; };
+		726C2DED222EC4AB0069FE7B /* fileHOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 726C2DEB222EC4AB0069FE7B /* fileHOT.png */; };
+		726C2DF0222EC4E50069FE7B /* cloudNOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 726C2DEE222EC4E40069FE7B /* cloudNOT.png */; };
+		726C2DF1222EC4E50069FE7B /* cloudHOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 726C2DEF222EC4E40069FE7B /* cloudHOT.png */; };
+		726C2DF5222ECA710069FE7B /* dumpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 726C2DF3222ECA710069FE7B /* dumpVC.m */; };
+		726C2DF6222ECA710069FE7B /* dumpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 726C2DF4222ECA710069FE7B /* dumpVC.xib */; };
 		72730C92221B20A2008FB944 /* spinnerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72730C8F221B20A2008FB944 /* spinnerView.m */; };
 		72730C94221B21BE008FB944 /* bgpspin.png in Resources */ = {isa = PBXBuildFile; fileRef = 72730C93221B21BE008FB944 /* bgpspin.png */; };
 		72730C97221B2F90008FB944 /* RawPlotData.m in Sources */ = {isa = PBXBuildFile; fileRef = 72730C96221B2F90008FB944 /* RawPlotData.m */; };
@@ -358,6 +365,8 @@
 		5BEAED3F1ABC1AC60013F194 /* SinusBarChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SinusBarChartViewController.xib; sourceTree = "<group>"; };
 		7220508E221C64350086F0A4 /* FiscalAxisValueFormatter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiscalAxisValueFormatter.h; sourceTree = "<group>"; };
 		7220508F221C64350086F0A4 /* FiscalAxisValueFormatter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FiscalAxisValueFormatter.m; sourceTree = "<group>"; };
+		72278B91222AF5C900C2FCB2 /* OCRSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCRSettings.h; sourceTree = "<group>"; };
+		72278B93222AF5C900C2FCB2 /* OCRSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OCRSettings.m; sourceTree = "<group>"; };
 		722D3918221A72D800C073B5 /* NavButtons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NavButtons.m; path = UI/NavButtons.m; sourceTree = "<group>"; };
 		722D3919221A72D800C073B5 /* NavButtons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NavButtons.h; path = UI/NavButtons.h; sourceTree = "<group>"; };
 		722D391C221A75AE00C073B5 /* dbNOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = dbNOT.png; path = ../../Resources/dbNOT.png; sourceTree = "<group>"; };
@@ -397,12 +406,20 @@
 		722D3965221B187200C073B5 /* CatObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatObject.m; sourceTree = "<group>"; };
 		722D3967221B190500C073B5 /* Vendors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vendors.h; sourceTree = "<group>"; };
 		722D3968221B190500C073B5 /* Vendors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Vendors.m; sourceTree = "<group>"; };
+		726C2DEA222EC4AB0069FE7B /* fileNOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fileNOT.png; sourceTree = "<group>"; };
+		726C2DEB222EC4AB0069FE7B /* fileHOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fileHOT.png; sourceTree = "<group>"; };
+		726C2DEE222EC4E40069FE7B /* cloudNOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cloudNOT.png; path = ../../Resources/cloudNOT.png; sourceTree = "<group>"; };
+		726C2DEF222EC4E40069FE7B /* cloudHOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cloudHOT.png; path = ../../Resources/cloudHOT.png; sourceTree = "<group>"; };
+		726C2DF2222ECA710069FE7B /* dumpVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dumpVC.h; sourceTree = "<group>"; };
+		726C2DF3222ECA710069FE7B /* dumpVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = dumpVC.m; sourceTree = "<group>"; };
+		726C2DF4222ECA710069FE7B /* dumpVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = dumpVC.xib; sourceTree = "<group>"; };
 		72730C8F221B20A2008FB944 /* spinnerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = spinnerView.m; path = UI/spinnerView.m; sourceTree = "<group>"; };
 		72730C91221B20A2008FB944 /* spinnerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = spinnerView.h; path = UI/spinnerView.h; sourceTree = "<group>"; };
 		72730C93221B21BE008FB944 /* bgpspin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bgpspin.png; path = ../../Resources/bgpspin.png; sourceTree = "<group>"; };
 		72730C95221B2F90008FB944 /* RawPlotData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RawPlotData.h; sourceTree = "<group>"; };
 		72730C96221B2F90008FB944 /* RawPlotData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RawPlotData.m; sourceTree = "<group>"; };
 		72730C98221B38CA008FB944 /* txt */ = {isa = PBXFileReference; lastKnownFileType = folder; path = txt; sourceTree = "<group>"; };
+		729A4131222DA7C100C9AE33 /* ObjectiveDropboxOfficial */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ObjectiveDropboxOfficial; path = 3rdparty/ObjectiveDropboxOfficial; sourceTree = SOURCE_ROOT; };
 		72B610F3221E7AEC00036E62 /* lines.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lines.png; path = ../../Resources/lines.png; sourceTree = "<group>"; };
 		72B610F5221E7AEC00036E62 /* scatter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scatter.png; path = ../../Resources/scatter.png; sourceTree = "<group>"; };
 		72B610F6221E7AED00036E62 /* donut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = donut.png; path = ../../Resources/donut.png; sourceTree = "<group>"; };
@@ -579,10 +596,14 @@
 		5B57BBB11A9B26AA0036A6CC /* Objective-C */ = {
 			isa = PBXGroup;
 			children = (
+				729A4131222DA7C100C9AE33 /* ObjectiveDropboxOfficial */,
 				5B57BBB61A9B26AA0036A6CC /* AppDelegate.h */,
 				5B57BBB71A9B26AA0036A6CC /* AppDelegate.m */,
 				722D392F221A7D3000C073B5 /* MainVC.h */,
 				722D3930221A7D3000C073B5 /* MainVC.m */,
+				726C2DF2222ECA710069FE7B /* dumpVC.h */,
+				726C2DF3222ECA710069FE7B /* dumpVC.m */,
+				726C2DF4222ECA710069FE7B /* dumpVC.xib */,
 				5B8EAF251AB32CF5009697AA /* DemoBaseViewController.h */,
 				5B8EAF261AB32CF5009697AA /* DemoBaseViewController.m */,
 				722D3931221A7D3000C073B5 /* MainVC.xib */,
@@ -602,6 +623,8 @@
 				722D3959221B17E600C073B5 /* EXPTable.m */,
 				722D3961221B185000C073B5 /* OCRCategories.h */,
 				722D3962221B185000C073B5 /* OCRCategories.m */,
+				72278B91222AF5C900C2FCB2 /* OCRSettings.h */,
+				72278B93222AF5C900C2FCB2 /* OCRSettings.m */,
 				722D395F221B182700C073B5 /* smartProducts.h */,
 				722D395E221B182700C073B5 /* smartProducts.m */,
 				72730C91221B20A2008FB944 /* spinnerView.h */,
@@ -635,6 +658,10 @@
 		5B8EAF2E1AB32E15009697AA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				726C2DEB222EC4AB0069FE7B /* fileHOT.png */,
+				726C2DEA222EC4AB0069FE7B /* fileNOT.png */,
+				726C2DEF222EC4E40069FE7B /* cloudHOT.png */,
+				726C2DEE222EC4E40069FE7B /* cloudNOT.png */,
 				72B610F7221E7AED00036E62 /* bars.png */,
 				72B610F6221E7AED00036E62 /* donut.png */,
 				72B610F3221E7AEC00036E62 /* lines.png */,
@@ -912,14 +939,17 @@
 				72B610FB221E7AED00036E62 /* bars.png in Resources */,
 				722D3935221A81B300C073B5 /* bgpburst.png in Resources */,
 				72B610F9221E7AED00036E62 /* scatter.png in Resources */,
+				726C2DEC222EC4AB0069FE7B /* fileNOT.png in Resources */,
 				5BEAED371ABC192F0013F194 /* RadarChartViewController.xib in Resources */,
 				722D3928221A75AE00C073B5 /* HamburgerNOT.png in Resources */,
 				5BEAED261ABC0BE20013F194 /* MultipleBarChartViewController.xib in Resources */,
 				5BEAED3C1ABC199F0013F194 /* ColoredLineChartViewController.xib in Resources */,
 				722D392B221A75AE00C073B5 /* grafNOT.png in Resources */,
 				5BEAED321ABC18F00013F194 /* CubicLineChartViewController.xib in Resources */,
+				726C2DF1222EC4E50069FE7B /* cloudHOT.png in Resources */,
 				5BEAED281ABC0BE20013F194 /* MultipleLinesChartViewController.xib in Resources */,
 				5B9624421B38608C007763E2 /* NegativeStackedBarChartViewController.xib in Resources */,
+				726C2DF0222EC4E50069FE7B /* cloudNOT.png in Resources */,
 				5B613DA41D526AD5000F1E98 /* radar_marker@3x.png in Resources */,
 				722D3933221A7D3000C073B5 /* MainVC.xib in Resources */,
 				5BE7E7631C693098000A0377 /* PositiveNegativeBarChartViewController.xib in Resources */,
@@ -931,8 +961,10 @@
 				722D3924221A75AE00C073B5 /* dbNOT.png in Resources */,
 				5BD8F0751AB89CE500566E05 /* LineChart1ViewController.xib in Resources */,
 				5BE673811D5B496500A87BA2 /* HalfPieChartViewController.xib in Resources */,
+				726C2DF6222ECA710069FE7B /* dumpVC.xib in Resources */,
 				B64D06EB1FB199130067418D /* Launch Screen.storyboard in Resources */,
 				5BD47E661ABB424E008FCEC6 /* BarChartViewController.xib in Resources */,
+				726C2DED222EC4AB0069FE7B /* fileHOT.png in Resources */,
 				72730C99221B38CB008FB944 /* txt in Resources */,
 				5BDEDC421ABB7F73007D3A60 /* HorizontalBarChartViewController.xib in Resources */,
 				72B610F8221E7AED00036E62 /* lines.png in Resources */,
@@ -996,6 +1028,7 @@
 				5B613DF21D5A60DF000F1E98 /* LargeValueFormatter.swift in Sources */,
 				5BEAED1B1ABBFB340013F194 /* ScatterChartViewController.m in Sources */,
 				5B0CC7851ABB875400665592 /* PieChartViewController.m in Sources */,
+				72278B94222AF5C900C2FCB2 /* OCRSettings.m in Sources */,
 				0439A3541C9FF95F00496F83 /* PiePolylineChartViewController.m in Sources */,
 				722D3963221B185000C073B5 /* OCRCategories.m in Sources */,
 				5BD47E651ABB424E008FCEC6 /* BarChartViewController.m in Sources */,
@@ -1016,6 +1049,7 @@
 				722D3966221B187200C073B5 /* CatObject.m in Sources */,
 				5BEAED2C1ABC160F0013F194 /* CandleStickChartViewController.m in Sources */,
 				5BEAED271ABC0BE20013F194 /* MultipleLinesChartViewController.m in Sources */,
+				726C2DF5222ECA710069FE7B /* dumpVC.m in Sources */,
 				722D395B221B17E600C073B5 /* EXPObject.m in Sources */,
 				5BE6739A1D5BAD7E00A87BA2 /* DateValueFormatter.m in Sources */,
 				5BE673801D5B496500A87BA2 /* HalfPieChartViewController.m in Sources */,

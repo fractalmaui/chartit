@@ -64,6 +64,10 @@
 -(float) getCatNPRSumByMonth : (int) cindex : (int) month_0_to_11;
 -(float) getCatLOSumByMonth : (int) cindex : (int) month_0_to_11;
 -(float) getCatNLOSumByMonth : (int) cindex : (int) month_0_to_11;
+-(void) readFullEXPTable : (NSString *) tableName : (int) skip;
+-(void) dumpAllStats;
+-(NSString *) getDumpStringOfAllStats;
+
 
 
 @end
@@ -71,8 +75,8 @@
 @protocol RawPlotDataDelegate <NSObject>
 @required
 @optional
--(void) didReadFullComparisonTable;
--(void) errorReadingFullComparisonTable : (NSString *)errmsg;
+-(void) didReadFullEXPTable;
+-(void) errorReadingFullEXPTable : (NSString *)errmsg;
 -(void) didGetStats;
 @end
 

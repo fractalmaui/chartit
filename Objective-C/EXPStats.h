@@ -86,6 +86,7 @@
 -(void) addCatAmount : (int) vindex : (int) cindex : (int) a : (BOOL) proFlag : (BOOL) locFlag;
 -(void) clear;
 -(void) dump;
+-(NSString*) getDumpString;
 -(NSUInteger) getCategoryIndex : (NSString*) catstr;
 -(int)  getCategoryPRSum : (int) cindex;
 -(int)  getCategoryNPRSum : (int) cindex;

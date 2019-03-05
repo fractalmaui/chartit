@@ -34,7 +34,7 @@
     NSString *workPDFFile;
     NSNumber *workPage;
     NSString *errorsByLineNumber[256];  // 256 invoice items?
-    NSMutableArray* internalPFOs;
+    NSMutableArray* internalPFOs;  //THIS IS NOT USED!!!
     NSMutableArray* csvList;
 
     int batchCounter;

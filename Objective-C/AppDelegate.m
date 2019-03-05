@@ -42,6 +42,9 @@
         //Load Vendors from parse db,
         // ...force a load also, since object may already have been created before DB is ready!
     }]];
+    
+    _settings = [OCRSettings sharedInstance]; //DHS 3/2
+
     vv = [Vendors sharedInstance]; //Load vendors as early as possible!
     vv.delegate = self;
     return YES;
@@ -79,7 +82,6 @@
 
 -(void) didReadVendorsFromParse
 {
-    NSLog(@" read vendors...");
     [[NSNotificationCenter defaultCenter] postNotificationName:@"vendorsLoaded"
                                                         object:nil userInfo:nil];
 }

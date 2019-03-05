@@ -291,11 +291,23 @@
     return ([foodCategories indexOfObject:cat.lowercaseString] != NSNotFound);
 }
 
+
 //=============(EXPStats)=====================================================
 -(void) dump
 {
+    NSLog(@"%@",[self getDumpString]);
+}
+
+//=============(EXPStats)=====================================================
+-(NSString*) getDumpString
+{
     //Dumpit
-    NSLog(@" dump Stats... %d/%d",_month,_year);
+    NSString *dumpit = [NSString stringWithFormat:@"Stats : %d/%d\n" ,_month,_year];
+    if (foodSum == 0) //Nuttin?
+    {
+        dumpit = [dumpit stringByAppendingString:@" ...empty\n"];
+        return dumpit;
+    }
     smartp = [[smartProducts alloc] init];
     NSString *tstr;
     NSString *tstr2;
@@ -303,28 +315,28 @@
     {
         if (amounts[i] > 0) //Got somethign for this vendor?
         {
-            NSLog(@"Vendor: %@",vnames[i]);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"Vendor: %@\n",vnames[i]]];
             float ftotal = (float)amounts[i] / 100.0;
             tstr = [smartp getDollarsAndCentsString:ftotal];
-            NSLog(@" Total $%@",tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Total $%@\n",tstr]];
             //int lct  = lcounts[i];
             int lam  = (float)lamounts[i] / 100.0;
             int nlam = (float)(amounts[i]-lamounts[i])/ 100.0;
             tstr = [smartp getDollarsAndCentsString:lam];
             tstr2 = [smartp getDollarsAndCentsString:nlam];
-            NSLog(@" Local:$%@ vs NonLocal:$%@",tstr,tstr2);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Local:$%@ vs NonLocal:$%@\n",tstr,tstr2]];
             //int pct  = pcounts[i];
             int pam  = (float)pamounts[i] / 100.0;
             int npam = (float)(amounts[i]-pamounts[i])/ 100.0;
             tstr = [smartp getDollarsAndCentsString:pam];
             tstr2 = [smartp getDollarsAndCentsString:npam];
-            NSLog(@" Processed:$%@ vs NonProcessed:$%@",tstr,tstr2);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Processed:$%@ vs NonProcessed:$%@\n",tstr,tstr2]];
             int fam = (float)famounts[i] / 100.0;
             int fct = fcounts[i];
             tstr = [smartp getDollarsAndCentsString:fam];
-            NSLog(@" Food Items %d : $%@",fct,tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Food Items %d : $%@\n",fct,tstr]];
             tstr = [smartp getDollarsAndCentsString:(ftotal-fam)];
-            NSLog(@" Non-Food Items %d : $%@",counts[i]-fct,tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Non-Food Items %d : $%@\n",counts[i]-fct,tstr]];
 
             float cPRtotal = 0.0;
             float cNPRtotal = 0.0;
@@ -339,55 +351,55 @@
                     cPRtotal += fPRtotal;
                     cNPRtotal += fNPRtotal;
                     tstr = [smartp getDollarsAndCentsString:fPRtotal];
-                    NSLog(@"  ...Cat[%@] processed amount     $%@",categories[j],tstr);
+                    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  ...Cat[%@] proc:     $%@\n",categories[j],tstr]];
                     tstr = [smartp getDollarsAndCentsString:fNPRtotal];
-                    NSLog(@"  ...Cat[%@] non-processed amount $%@",categories[j],tstr);
+                    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  ...Cat[%@] non-proc: $%@\n",categories[j],tstr]];
                 }
             } //end for j
             tstr = [smartp getDollarsAndCentsString:cPRtotal];
-            NSLog(@"  Processed Total: $%@",tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  Processed Total: $%@\n",tstr]];
             tstr = [smartp getDollarsAndCentsString:cNPRtotal];
-            NSLog(@"  Non-Processed Total: $%@",tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  Non-Processed Total: $%@\n",tstr]];
 
         }    //end if amounts..
     }       //end for i
-    NSLog(@"  Category sums:");
+    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  Category sums:\n"]];
     for (int j=0;j<(int)categories.count;j++)
     {
         float ftotal,fsum;
         NSString *catstr = categories[j];
-        NSLog(@"   Cat[%@] ........... ",catstr);
+        dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"   Cat[%@] ........... \n",catstr]];
         ftotal = fsum = 0.0;
         if ([self isFoodItem:catstr])
         {
             fsum   = (float)(catPRSums[j] + catNPRSums[j])/ 100.0;
             tstr = [smartp getDollarsAndCentsString:fsum];
-            NSLog(@"  ... Total             $%@",tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  ... Total             $%@\n",tstr]];
             ftotal = (float)catPRSums[j]/ 100.0;
             tstr = [smartp getDollarsAndCentsString:ftotal];
-            NSLog(@"  ... Processed     sum $%@",tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  ... Processed     sum $%@\n",tstr]];
             ftotal = (float)catNPRSums[j]/ 100.0;
             tstr = [smartp getDollarsAndCentsString:ftotal];
-            NSLog(@"  ... Non-Processed sum $%@",tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  ... Non-Processed sum $%@\n",tstr]];
         }
         else{
             ftotal = (float)catNPRSums[j]/ 100.0;
             tstr = [smartp getDollarsAndCentsString:ftotal];
-            NSLog(@"  ...Cat[%@]sum $%@",catstr,tstr);
+            dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"  ...Cat[%@]sum $%@\n",catstr,tstr]];
         }
     }
     
-    NSLog(@"    ........... ");
+    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@"    ........... \n"]];
     float prtotal = (float)processedSum/ 100.0;
     tstr  = [smartp getDollarsAndCentsString:prtotal];
-    NSLog(@" Overall Processed sum : %@",tstr);
+    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Overall Processed sum : %@\n",tstr]];
     float lototal = (float)localSum/ 100.0;
     tstr = [smartp getDollarsAndCentsString:lototal];
-    NSLog(@" Overall Local    sum : %@",tstr);
+    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Overall Local    sum : %@\n",tstr]];
     float fototal = (float)foodSum/ 100.0;
     tstr = [smartp getDollarsAndCentsString:fototal];
-    NSLog(@" Overall Food     sum : %@",tstr);
-
+    dumpit = [dumpit stringByAppendingString:[NSString stringWithFormat:@" Overall Food     sum : %@\n",tstr]];
+    return dumpit;
     
 } //end dump
 

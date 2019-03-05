@@ -16,12 +16,14 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+#import "OCRSettings.h"
 #import "Vendors.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate, VendorsDelegate>
 {
     Vendors *vv;
 }
 
+@property (strong, nonatomic) OCRSettings* settings;
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic , assign) BOOL debugMode;

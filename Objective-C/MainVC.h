@@ -1,4 +1,10 @@
 //
+//   __  __       _    __     ______
+//  |  \/  | __ _(_)_ _\ \   / / ___|
+//  | |\/| |/ _` | | '_ \ \ / / |
+//  | |  | | (_| | | | | \ V /| |___
+//  |_|  |_|\__,_|_|_| |_|\_/  \____|
+//
 //  MainVC.h
 //  ChartsDemo-iOS
 //
@@ -9,7 +15,7 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import "NavButtons.h"
-#import "EXPTable.h"
+#import "dumpVC.h"
 #import "spinnerView.h"
 #import "LineChart1ViewController.h"
 #import "BarChartViewController.h"
@@ -26,6 +32,7 @@
                             UITableViewDelegate,UITableViewDataSource>
 {
     NavButtons *nav;
+    dumpVC *dvc;
     UITableView *plotOptionsTable;
     int viewWid,viewHit,viewW2,viewH2;
     NSMutableArray *plotObjects;
@@ -43,6 +50,7 @@
     NSArray *pieOptions;
     NSArray *scatterOptions;
     NSArray *tableOptions;
+    NSString *dataSource;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *lineButton;
