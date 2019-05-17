@@ -14,6 +14,7 @@
 
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
+#import "AppDelegate.h"
 #import "NavButtons.h"
 #import "dumpVC.h"
 #import "spinnerView.h"
@@ -51,6 +52,8 @@
     NSArray *scatterOptions;
     NSArray *tableOptions;
     NSString *dataSource;
+    
+    AppDelegate * mappDelegate;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *lineButton;
@@ -60,10 +63,12 @@
 @property (weak, nonatomic) IBOutlet UIView *buttonsView;
 @property (weak, nonatomic) IBOutlet UIView *overlayView;
 @property (weak, nonatomic) IBOutlet UIImageView *animImage;
+@property (weak, nonatomic) IBOutlet UILabel *customerLabel;
 - (IBAction)lineSelect:(id)sender;
 - (IBAction)barSelect:(id)sender;
 - (IBAction)donutSelect:(id)sender;
 - (IBAction)scatterSelect:(id)sender;
+- (IBAction)customerSelect:(id)sender;
 
 @end
 

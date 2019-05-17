@@ -62,6 +62,10 @@
 //Batch table...
 #define PInv_BatchSOIDs_key  @"BatchSOIDs"
 
+//Customers table...
+#define PInv_CustomerName_key       @"CustomerName"
+#define PInv_FullName_key   @"FullName"
+
 //Vendor table...
 #define PInv_Rotated_key     @"Rotated"
 #define PInv_IntQuantity_key @"IntQuantity"

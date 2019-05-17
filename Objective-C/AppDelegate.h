@@ -17,16 +17,25 @@
 #import <UIKit/UIKit.h>
 #import <Parse/Parse.h>
 #import "OCRSettings.h"
+#import "Customers.h"
 #import "Vendors.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate, VendorsDelegate>
 {
     Vendors *vv;
 }
 
+@property (nonatomic , strong) Customers* cust;  //DHS 3/13
 @property (strong, nonatomic) OCRSettings* settings;
+@property (nonatomic , strong) NSString* selectedCustomer;      //DHS 3/20
+@property (nonatomic , strong) NSString* selectedCustomerFullName; //DHS 3/20
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic , assign) BOOL debugMode;
+
+-(void) updateCustomerDefaults : (NSString *)customerString : (NSString *)customerFullString;
+-(void) getUserDefaults;
+
+
 
 @end
 

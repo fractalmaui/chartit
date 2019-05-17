@@ -14,6 +14,7 @@
 //   ray wenderlich tutorial on swift charts:
 //    https://medium.com/@skoli/using-realm-and-charts-with-swift-3-in-ios-10-40c42e3838c0
 //  2/28 add switch back to BGPCloud app, (using RH navbar button for now)
+//  5/17 add multi-customer support
 #import "MainVC.h"
 
 @interface MainVC ()
@@ -48,6 +49,9 @@
 // Since this comes from an XIB, we're handling inits in here...
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    mappDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+
     CGSize csz   = [UIScreen mainScreen].bounds.size;
     viewWid = (int)csz.width;
     viewHit = (int)csz.height;
@@ -116,9 +120,17 @@
 
 } //end viewDidLoad
 
+//=============OCR MainVC=====================================================
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _customerLabel.text = mappDelegate.selectedCustomerFullName;
+}
+
 //=============MainVC=====================================================
 -(void) viewDidAppear:(BOOL)animated
 {
+    
     [super viewDidAppear:animated];
     [self startLoadingData];  //use canned vendors, load data immediately
 }
@@ -166,6 +178,14 @@
     [self errorMessage : @"Not Implemented" : @"There are no Scatter Plots set up Yet"];
 }
 
+
+//=============MainVC=====================================================
+// 5/17
+- (IBAction)customerSelect:(id)sender {
+    [self customerMenu];
+
+}
+
 //=============MainVC=====================================================
 //  Called when "vendors Loaded" notification comes in...
 - (void)startLoadingData
@@ -183,7 +203,10 @@
     }
     else if ([dataSource isEqualToString:@"exp"])
     {
-        [rpd readFullEXPTable : @"EXP_Comparison" : 0 ];
+        //DHS 5/17 new table names EXP_GRAPH_CUSTOMERABBREVIATEDNAME
+//        [rpd readFullEXPTable : @"EXP_Comparison" : 0 ];
+        NSString *etName = [NSString stringWithFormat:@"EXP_GRAPH_%@",mappDelegate.selectedCustomer];
+        [rpd readFullEXPTable : etName : 0];   //@"EXP_Comparison" : 0 ];
     }
 } //end startLoadingData
     
@@ -349,6 +372,12 @@
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
     [alert setValue:tatString forKey:@"attributedTitle"];
     
+    //5/17 add customer selection
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Change Customer",nil)
+                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                  [self customerMenu];
+                                              }]];
+
     //Only have plot options if there is something to plot!
     if (statsLoaded)
     {
@@ -365,6 +394,42 @@
     
     
 } //end menu
+
+
+//=============OCR MainVC=====================================================
+// 5/17 New: multi-customer support
+-(void) customerMenu
+{
+    
+
+    NSString *cstr = [NSString stringWithFormat:@"Current Customer [%@]",mappDelegate.selectedCustomer];
+    NSMutableAttributedString *tatString = [[NSMutableAttributedString alloc]initWithString:cstr];
+    [tatString addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:30] range:NSMakeRange(0, tatString.length)];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:
+                                NSLocalizedString(cstr,nil)
+                                                                   message:nil
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    [alert setValue:tatString forKey:@"attributedTitle"];
+    int i = 0;
+    for (NSString *nextCust in mappDelegate.cust.customerNames)
+    {
+        NSString *cfull = mappDelegate.cust.fullNames[i];
+        [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(nextCust,nil)
+                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                      [mappDelegate updateCustomerDefaults:nextCust :cfull];
+                                                      self->_customerLabel.text = cfull;
+                                                  }]];
+        i++;
+    }
+    [alert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",nil)
+                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                 // [self makeCancelSound];
+                                              }]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+    
+} //end customerMenu
 
 //=============MainVC=====================================================
 -(void) loadMenu

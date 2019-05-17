@@ -47,6 +47,12 @@
 
     vv = [Vendors sharedInstance]; //Load vendors as early as possible!
     vv.delegate = self;
+    
+    //5/17 customers, saved to defaults...
+    _cust = [Customers sharedInstance]; //DHS 3/13 new table
+    [self getUserDefaults];
+
+    
     return YES;
 }
 
@@ -89,6 +95,34 @@
 {
     NSLog(@" error reading vendors...");
 
+}
+
+
+//====(TestOCR AppDelegate)==========================================
+-(void) updateCustomerDefaults : (NSString *)customerString : (NSString *)customerFullString
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    _selectedCustomer            = customerString;
+    _selectedCustomerFullName    = customerFullString;
+    [userDefaults setObject:_selectedCustomer         forKey:@"customer"];
+    [userDefaults setObject:_selectedCustomerFullName forKey:@"customerFull"];
+    
+} //end updateCustomerDefault
+
+//====(TestOCR AppDelegate)==========================================
+-(void) getUserDefaults
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:@"customer"] == nil  ) //No defaults yet?
+    {
+        NSLog(@" no defaults: reset");
+        [userDefaults setObject:@"KCH" forKey:@"customer"];
+        [userDefaults setObject:@"Kona Hospital" forKey:@"customerFull"];
+    }
+    else NSLog(@" found defaults...");
+    _selectedCustomer         = [userDefaults objectForKey:@"customer"];
+    _selectedCustomerFullName = [userDefaults objectForKey:@"customerFull"];
+    
 }
 
 

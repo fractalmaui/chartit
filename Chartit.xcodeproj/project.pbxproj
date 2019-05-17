@@ -143,7 +143,6 @@
 		722D3929221A75AE00C073B5 /* multiHOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D3921221A75AE00C073B5 /* multiHOT.png */; };
 		722D392A221A75AE00C073B5 /* grafHOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D3922221A75AE00C073B5 /* grafHOT.png */; };
 		722D392B221A75AE00C073B5 /* grafNOT.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D3923221A75AE00C073B5 /* grafNOT.png */; };
-		722D392D221A75FC00C073B5 /* binonion.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D392C221A75FB00C073B5 /* binonion.png */; };
 		722D3932221A7D3000C073B5 /* MainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 722D3930221A7D3000C073B5 /* MainVC.m */; };
 		722D3933221A7D3000C073B5 /* MainVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 722D3931221A7D3000C073B5 /* MainVC.xib */; };
 		722D3935221A81B300C073B5 /* bgpburst.png in Resources */ = {isa = PBXBuildFile; fileRef = 722D3934221A81B300C073B5 /* bgpburst.png */; };
@@ -177,6 +176,8 @@
 		72B610F9221E7AED00036E62 /* scatter.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F5221E7AEC00036E62 /* scatter.png */; };
 		72B610FA221E7AED00036E62 /* donut.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F6221E7AED00036E62 /* donut.png */; };
 		72B610FB221E7AED00036E62 /* bars.png in Resources */ = {isa = PBXBuildFile; fileRef = 72B610F7221E7AED00036E62 /* bars.png */; };
+		72F71389228F6BD900B4161B /* Customers.m in Sources */ = {isa = PBXBuildFile; fileRef = 72F71386228F6BD800B4161B /* Customers.m */; };
+		72F7138B228F6C2B00B4161B /* binonion.png in Resources */ = {isa = PBXBuildFile; fileRef = 72F7138A228F6C2A00B4161B /* binonion.png */; };
 		B64D06EB1FB199130067418D /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B64D06EA1FB199130067418D /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -377,7 +378,6 @@
 		722D3921221A75AE00C073B5 /* multiHOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = multiHOT.png; path = ../../Resources/multiHOT.png; sourceTree = "<group>"; };
 		722D3922221A75AE00C073B5 /* grafHOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grafHOT.png; path = ../../Resources/grafHOT.png; sourceTree = "<group>"; };
 		722D3923221A75AE00C073B5 /* grafNOT.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grafNOT.png; path = ../../Resources/grafNOT.png; sourceTree = "<group>"; };
-		722D392C221A75FB00C073B5 /* binonion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = binonion.png; path = ../../Resources/binonion.png; sourceTree = "<group>"; };
 		722D392F221A7D3000C073B5 /* MainVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainVC.h; sourceTree = "<group>"; };
 		722D3930221A7D3000C073B5 /* MainVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainVC.m; sourceTree = "<group>"; };
 		722D3931221A7D3000C073B5 /* MainVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainVC.xib; sourceTree = "<group>"; };
@@ -424,6 +424,9 @@
 		72B610F5221E7AEC00036E62 /* scatter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = scatter.png; path = ../../Resources/scatter.png; sourceTree = "<group>"; };
 		72B610F6221E7AED00036E62 /* donut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = donut.png; path = ../../Resources/donut.png; sourceTree = "<group>"; };
 		72B610F7221E7AED00036E62 /* bars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bars.png; path = ../../Resources/bars.png; sourceTree = "<group>"; };
+		72F71386228F6BD800B4161B /* Customers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Customers.m; sourceTree = "<group>"; };
+		72F71388228F6BD800B4161B /* Customers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Customers.h; sourceTree = "<group>"; };
+		72F7138A228F6C2A00B4161B /* binonion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = binonion.png; sourceTree = "<group>"; };
 		B64D06EA1FB199130067418D /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -599,6 +602,8 @@
 				729A4131222DA7C100C9AE33 /* ObjectiveDropboxOfficial */,
 				5B57BBB61A9B26AA0036A6CC /* AppDelegate.h */,
 				5B57BBB71A9B26AA0036A6CC /* AppDelegate.m */,
+				72F71388228F6BD800B4161B /* Customers.h */,
+				72F71386228F6BD800B4161B /* Customers.m */,
 				722D392F221A7D3000C073B5 /* MainVC.h */,
 				722D3930221A7D3000C073B5 /* MainVC.m */,
 				726C2DF2222ECA710069FE7B /* dumpVC.h */,
@@ -658,6 +663,7 @@
 		5B8EAF2E1AB32E15009697AA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				72F7138A228F6C2A00B4161B /* binonion.png */,
 				726C2DEB222EC4AB0069FE7B /* fileHOT.png */,
 				726C2DEA222EC4AB0069FE7B /* fileNOT.png */,
 				726C2DEF222EC4E40069FE7B /* cloudHOT.png */,
@@ -668,7 +674,6 @@
 				72B610F5221E7AEC00036E62 /* scatter.png */,
 				72730C93221B21BE008FB944 /* bgpspin.png */,
 				722D3934221A81B300C073B5 /* bgpburst.png */,
-				722D392C221A75FB00C073B5 /* binonion.png */,
 				722D391D221A75AE00C073B5 /* dbHOT.png */,
 				722D391C221A75AE00C073B5 /* dbNOT.png */,
 				722D3922221A75AE00C073B5 /* grafHOT.png */,
@@ -935,7 +940,6 @@
 				5BEAED131ABBFB2B0013F194 /* AnotherBarChartViewController.xib in Resources */,
 				5BEAED411ABC1AC60013F194 /* SinusBarChartViewController.xib in Resources */,
 				72730C94221B21BE008FB944 /* bgpspin.png in Resources */,
-				722D392D221A75FC00C073B5 /* binonion.png in Resources */,
 				72B610FB221E7AED00036E62 /* bars.png in Resources */,
 				722D3935221A81B300C073B5 /* bgpburst.png in Resources */,
 				72B610F9221E7AED00036E62 /* scatter.png in Resources */,
@@ -953,6 +957,7 @@
 				5B613DA41D526AD5000F1E98 /* radar_marker@3x.png in Resources */,
 				722D3933221A7D3000C073B5 /* MainVC.xib in Resources */,
 				5BE7E7631C693098000A0377 /* PositiveNegativeBarChartViewController.xib in Resources */,
+				72F7138B228F6C2B00B4161B /* binonion.png in Resources */,
 				5B0CC7861ABB875400665592 /* PieChartViewController.xib in Resources */,
 				5BEAED1C1ABBFB340013F194 /* ScatterChartViewController.xib in Resources */,
 				722D392A221A75AE00C073B5 /* grafHOT.png in Resources */,
@@ -1068,6 +1073,7 @@
 				5BEAED311ABC18F00013F194 /* CubicLineChartViewController.m in Sources */,
 				5BEAED1D1ABBFB340013F194 /* StackedBarChartViewController.m in Sources */,
 				5BD47E601ABB3C91008FCEC6 /* LineChart2ViewController.m in Sources */,
+				72F71389228F6BD900B4161B /* Customers.m in Sources */,
 				5B57BBB51A9B26AA0036A6CC /* main.m in Sources */,
 				5BEAED361ABC192F0013F194 /* RadarChartViewController.m in Sources */,
 				5B9624411B38608C007763E2 /* NegativeStackedBarChartViewController.m in Sources */,
